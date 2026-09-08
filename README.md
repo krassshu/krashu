@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HomeOS
 
-## Getting Started
+Responsywna wizytówka i dokumentacja koncepcji lokalnego systemu zarządzania domem. Next.js App Router, TypeScript, Server Components i lekki przełącznik PL / EN.
 
-First, run the development server:
+## Uruchomienie
 
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Podgląd: http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Weryfikacja
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+npm run lint
+npm run typecheck
+npm run build
+```
 
-## Learn More
+Build używa Webpacka, zachowując poprawkę repozytorium dla Alpine. Skrypt `npm test` jest przygotowany pod Playwright; scenariusze przeglądarkowe nie zostały jeszcze dodane.
 
-To learn more about Next.js, take a look at the following resources:
+## Docker
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+docker build -t homeos .
+docker run --rm -p 3000:3000 homeos
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Domyślnie powstaje build `standalone`, zgodny z Dockerfile. Opcjonalny eksport statyczny: `SITE_OUTPUT=export npm run build`; pliki wynikowe trafiają do `out/`.
 
-## Deploy on Vercel
+## Routing i języki
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Polski: `/`, `/architecture/`, `/network/`, `/documents/`, `/roadmap/`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Angielski: te same ścieżki z prefiksem `/en/`. Przełącznik języka zachowuje aktualną podstronę. Tłumaczenia znajdują się w `lib/en.json`, wspólne widoki w `components/views/`.
+
+## SEO i domena
+
+Metadata API zawiera tytuły, opisy, canonical, Open Graph, Twitter oraz alternatywne wersje językowe. Dane JSON-LD opisują projekt i ścieżki nawigacji. `app/sitemap.ts` i `app/robots.ts` generują pliki dla robotów.
+
+Podczas budowania ustaw `SITE_URL` na właściwą domenę. Domyślnie indeksowanie jest wyłączone: metadata ma `noindex`, robots blokuje roboty, a sitemap jest pusta. Na docelowym publicznym wdrożeniu ustaw `SITE_INDEXABLE=true` i przebuduj stronę. Przykład:
+
+```sh
+docker build --build-arg SITE_URL=https://twoja-domena.pl --build-arg SITE_INDEXABLE=true -t homeos .
+```
+
+Bez konfiguracji adres bazowy wskazuje przygotowany adres podglądu Sites; nie oznacza to, że podgląd został opublikowany. Wartości SEO są ustalane podczas buildu, więc zmiana samych zmiennych uruchomionego kontenera ich nie zmieni.
+
+## Struktura
+
+- `app/` — osobne układy językowe, routing, ikona, robots i sitemap.
+- `components/` — hero, Object Engine, przepływ dokumentów, diagramy architektury i sieci, roadmapa, nawigacja.
+- `lib/` — metadata, adresy, tłumaczenia i obsługa języków.
+- `app/globals.css` — wspólne tokeny, układ responsywny i reduced motion.
+
+Treść wyraźnie oddziela obecny zakres MVP w rozwoju od planowanych modułów. Strona prezentuje koncepcję HomeOS; nie implementuje jego backendu ani importowania dokumentów.
