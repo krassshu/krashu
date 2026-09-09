@@ -18,4 +18,4 @@ export function Icon({ name = 'box', size = 20, style }: { name?: string; size?:
  };
  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={style}><path d={paths[name] || paths.box}/></svg>;
 }
-export function Brand(){return <span className="brand"><span className="brand-mark"><Icon name="home" size={21}/></span>Home<span className="brand-os">OS</span></span>}
+export function Brand(){return <span className="brand"><span className="brand-mark"><Icon name="home" size={21}/></span>Home<span className="brand-os">IntelCore</span></span>}

@@ -1,7 +1,7 @@
 {
-  "name": "homeos",
+  "name": "homeintelcore",
   "version": "1.0.0",
-  "description": "HomeOS — lokalny system operacyjny domu",
+  "description": "HomeIntelCore — prywatna inteligencja całego domu",
   "main": "index.js",
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",

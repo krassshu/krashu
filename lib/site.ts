@@ -12,11 +12,11 @@ export const routes = [
 export function pageMetadata(title:string,description:string,path:string,locale:Locale='pl'):Metadata {
  const translatedTitle=t(title,locale),translatedDescription=t(description,locale),url=localHref(path,locale);
  return {title:translatedTitle,description:translatedDescription,alternates:{canonical:url,languages:{'pl-PL':path,'en':localHref(path,'en'),'x-default':path}},
- openGraph:{title:`${translatedTitle} | HomeOS`,description:translatedDescription,url,siteName:'HomeOS',locale:locale==='pl'?'pl_PL':'en_GB',alternateLocale:locale==='pl'?'en_GB':'pl_PL',type:'website'},
- twitter:{card:'summary',title:`${translatedTitle} | HomeOS`,description:translatedDescription}};
+ openGraph:{title:`${translatedTitle} | HomeIntelCore`,description:translatedDescription,url,siteName:'HomeIntelCore',locale:locale==='pl'?'pl_PL':'en_GB',alternateLocale:locale==='pl'?'en_GB':'pl_PL',type:'website'},
+ twitter:{card:'summary',title:`${translatedTitle} | HomeIntelCore`,description:translatedDescription}};
 }
 export function rootMetadata(locale:Locale):Metadata {
- const title=locale==='pl'?'HomeOS — lokalny system operacyjny domu':'HomeOS — a local home operating system';
- const description=locale==='pl'?'HomeOS: prywatny system zarządzania domem. Obiekty, dokumenty i terminy połączone na własnym serwerze. Poznaj koncepcję, architekturę i sieć domową.':'HomeOS: a private home management system. Objects, documents and deadlines connected on your own server. Explore the concept, architecture and home network.';
- return {...pageMetadata(title,description,'/',locale),metadataBase:siteUrl,title:{default:title,template:'%s | HomeOS'},authors:[{name:'HomeOS'}],creator:'HomeOS',publisher:'HomeOS',robots:{index:indexable,follow:true,googleBot:{index:indexable,follow:true}}};
+ const title=locale==='pl'?'HomeIntelCore — prywatna inteligencja całego domu':'HomeIntelCore — a private intelligence for your entire home';
+ const description=locale==='pl'?'HomeIntelCore: lokalny, prywatny system łączący ludzi, dokumenty, obiekty, urządzenia, energię i monitoring w jednym kontekście domu. Obecny fundament to Home Memory; kolejne warstwy są kierunkiem rozwoju.':'HomeIntelCore: a local-first, private system connecting people, documents, objects, devices, energy and monitoring in one home context. Home Memory is the current foundation; the remaining layers are the direction of development.';
+ return {...pageMetadata(title,description,'/',locale),metadataBase:siteUrl,title:{default:title,template:'%s | HomeIntelCore'},authors:[{name:'HomeIntelCore'}],creator:'HomeIntelCore',publisher:'HomeIntelCore',robots:{index:indexable,follow:true,googleBot:{index:indexable,follow:true}}};
 }

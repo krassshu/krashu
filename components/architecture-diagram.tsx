@@ -2,4 +2,39 @@ import { t, type Locale } from '@/lib/i18n';
 import { Icon } from './icons';
 export function ArchitectureDiagram({ locale = "pl" }: {
     locale?: Locale;
-} = {}) { return <figure className="architecture-diagram"><div className="panel-toolbar"><span>{t("HOMEOS / ARCHITEKTURA LOGICZNA", locale)}</span><span>{t("Zakres Core", locale)}</span></div><div className="architecture-content"><div className="architecture-entry"><span><Icon name="person" size={17}/>{t(" U\u017Cytkownik", locale)}</span><i aria-hidden="true">{t("\u2193", locale)}</i><span><strong>{t("Caddy", locale)}</strong><small>{t("Punkt wej\u015Bcia / reverse proxy", locale)}</small></span><i aria-hidden="true">{t("\u2193", locale)}</i><span><strong>{t("Next.js", locale)}</strong><small>{t("Interfejs u\u017Cytkownika", locale)}</small></span><i aria-hidden="true">{t("\u2193", locale)}</i><span className="core-node"><strong>{t("NestJS Core", locale)}</strong><small>{t("Obiekty \u00B7 relacje \u00B7 terminy", locale)}</small></span></div><div className="architecture-branches"><div className="arch-branch"><strong>{t("PostgreSQL Core", locale)}</strong><span>{t("Model danych HomeOS", locale)}</span></div><div className="arch-branch"><strong>{t("Valkey / BullMQ", locale)}</strong><span>{t("Kolejka zada\u0144 w tle", locale)}</span></div><div className="arch-branch provider"><strong>{t("DocumentProvider", locale)}</strong><span>{t("Granica integracji dokument\u00F3w", locale)}</span><i aria-hidden="true">{t("\u2193", locale)}</i><div className="paperless-node"><strong>{t("Paperless-ngx", locale)}</strong><span>{t("Dokumenty / OCR", locale)}</span></div><div className="paperless-deps"><span>{t("PostgreSQL", locale)}<small>{t("Dane Paperless", locale)}</small></span><span>{t("Gotenberg", locale)}<small>{t("Konwersja plik\u00F3w", locale)}</small></span></div></div></div><div className="compose-label"><span className="status-dot"/>{t(" Docker Compose ", locale)}<span>{t("/ uruchomienie us\u0142ug na w\u0142asnym serwerze", locale)}</span></div></div><figcaption>{t("U\u017Cytkownik \u0142\u0105czy si\u0119 przez Caddy z Next.js, a interfejs z NestJS Core. Core korzysta z w\u0142asnej bazy PostgreSQL, kolejki Valkey / BullMQ oraz DocumentProvider. Provider \u0142\u0105czy Core z Paperless-ngx, jego baz\u0105 PostgreSQL i us\u0142ug\u0105 Gotenberg.", locale)}</figcaption></figure>; }
+} = {}) {
+    return <figure className="architecture-diagram">
+        <div className="panel-toolbar"><span>{t("HOMEINTELCORE / ARCHITEKTURA LOGICZNA", locale)}</span><span>{t("Zakres Core", locale)}</span></div>
+        <div className="architecture-content">
+            <div className="architecture-entry">
+                <span><Icon name="person" size={17}/>{t(" Użytkownik", locale)}</span>
+                <i aria-hidden="true">↓</i>
+                <span><strong>{t("Interfejs użytkownika", locale)}</strong><small>{t("Next.js — jedna aplikacja do domu", locale)}</small></span>
+                <i aria-hidden="true">↓</i>
+                <span className="core-node"><strong>{t("Core", locale)}</strong><small>{t("Obiekty · relacje · uprawnienia · terminy", locale)}</small></span>
+            </div>
+            <div className="architecture-branches">
+                <div className="arch-branch"><strong>{t("PostgreSQL Core", locale)}</strong><span>{t("Model obiektów i relacji", locale)}</span></div>
+                <div className="arch-branch"><strong>{t("Kolejka zadań", locale)}</strong><span>{t("Praca w tle: import, OCR, przypomnienia", locale)}</span></div>
+                <div className="arch-branch provider">
+                    <strong>{t("DocumentProvider", locale)}</strong><span>{t("Granica integracji dokumentów", locale)}</span>
+                    <i aria-hidden="true">↓</i>
+                    <div className="paperless-node"><strong>{t("Paperless-ngx", locale)}</strong><span>{t("Dokumenty / OCR", locale)}</span></div>
+                    <div className="paperless-deps"><span>{t("PostgreSQL", locale)}<small>{t("Dane Paperless", locale)}</small></span><span>{t("Gotenberg", locale)}<small>{t("Konwersja plików", locale)}</small></span></div>
+                </div>
+            </div>
+            <div className="planned-layers">
+                <div className="planned-layers-label"><span className="tag planned">{t("planowane warstwy", locale)}</span><span>{t("Nie wdrożone. Dołączają do tego samego modelu domu.", locale)}</span></div>
+                <div className="planned-grid">
+                    <span><Icon name="plug" size={16}/><strong>{t("Home Assistant", locale)}</strong><small>{t("Urządzenia, sceny, rutyny", locale)}</small></span>
+                    <span><Icon name="network" size={16}/><strong>{t("Monitoring / NVR", locale)}</strong><small>{t("Kamery i lokalna rejestracja obrazu", locale)}</small></span>
+                    <span><Icon name="clock" size={16}/><strong>{t("Energia", locale)}</strong><small>{t("Falownik, licznik, magazyn energii", locale)}</small></span>
+                    <span><Icon name="search" size={16}/><strong>{t("Lokalne AI", locale)}</strong><small>{t("Wyszukiwanie semantyczne i kontekst", locale)}</small></span>
+                    <span><Icon name="shield" size={16}/><strong>{t("WireGuard", locale)}</strong><small>{t("Kontrolowany dostęp zdalny", locale)}</small></span>
+                </div>
+            </div>
+            <div className="compose-label"><span className="status-dot"/>{t(" Docker Compose ", locale)}<span>{t("/ uruchomienie usług na własnym serwerze", locale)}</span></div>
+        </div>
+        <figcaption>{t("Użytkownik korzysta z interfejsu Next.js, a interfejs z Core. Core przechowuje model obiektów i relacji w PostgreSQL, zleca pracę w tle kolejce zadań i sięga po dokumenty przez DocumentProvider, który łączy go z Paperless-ngx, jego bazą PostgreSQL i usługą Gotenberg. Home Assistant, monitoring, energia, lokalne AI i WireGuard to warstwy planowane, jeszcze niewdrożone.", locale)}</figcaption>
+    </figure>;
+}

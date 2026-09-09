@@ -21,12 +21,12 @@ export function PageIntro({ number, label, title, description, locale = "pl" }: 
     title: string;
     description: string;
     locale?: Locale;
-}) { return <section className="page-intro container"><nav className="breadcrumb" aria-label={t("\u015Acie\u017Cka nawigacji", locale)}><Link href={localHref("/", locale)}>{t("HomeOS", locale)}</Link><span aria-hidden="true">{t("/", locale)}</span><span aria-current="page">{t(label, locale)}</span></nav><div className="eyebrow">{t(number, locale)}{t(" / DOKUMENTACJA PROJEKTU", locale)}</div><h1>{t(title, locale)}</h1><p>{t(description, locale)}</p></section>; }
+}) { return <section className="page-intro container"><nav className="breadcrumb" aria-label={t("\u015Acie\u017Cka nawigacji", locale)}><Link href={localHref("/", locale)}>{t("HomeIntelCore", locale)}</Link><span aria-hidden="true">{t("/", locale)}</span><span aria-current="page">{t(label, locale)}</span></nav><div className="eyebrow">{t(number, locale)}{t(" / DOKUMENTACJA PROJEKTU", locale)}</div><h1>{t(title, locale)}</h1><p>{t(description, locale)}</p></section>; }
 export function BreadcrumbData({ label, path, locale = "pl" }: {
     label: string;
     path: string;
     locale?: Locale;
-}) { return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'HomeOS', item: new URL(localHref('/', locale), siteUrl).href }, { '@type': 'ListItem', position: 2, name: t(label, locale), item: new URL(localHref(path, locale), siteUrl).href }] }).replace(/</g, '\\u003c') }}/>; }
+}) { return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'HomeIntelCore', item: new URL(localHref('/', locale), siteUrl).href }, { '@type': 'ListItem', position: 2, name: t(label, locale), item: new URL(localHref(path, locale), siteUrl).href }] }).replace(/</g, '\\u003c') }}/>; }
 export function Note({ children, locale = "pl" }: {
     children: ReactNode;
     locale?: Locale;

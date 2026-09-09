@@ -4,4 +4,22 @@ import { Icon } from './icons';
 import { HomeTree } from './home-tree';
 export function Hero({ locale = "pl" }: {
     locale?: Locale;
-} = {}) { return <section className="hero container"><div className="hero-copy"><div className="eyebrow"><span className="tiny-square"/>{t(" SYSTEM OPERACYJNY DOMU", locale)}</div><h1>{t("Tw\u00F3j dom ma dane.", locale)}<br /><span>{t("HomeOS nadaje", locale)}<br className="desktop-break"/>{t(" im kontekst.", locale)}</span></h1><p>{t("Lokalny, prywatny system, kt\u00F3ry \u0142\u0105czy osoby, pojazdy, dokumenty, urz\u0105dzenia i terminy. Na Twoim serwerze. W jednym modelu.", locale)}</p><div className="hero-actions"><Link className="button primary" href={localHref("#idea", locale)}>{t("Poznaj ide\u0119 ", locale)}<Icon name="arrow" size={18}/></Link><Link className="button secondary" href={localHref("/architecture/", locale)}>{t("Zobacz architektur\u0119 ", locale)}<span aria-hidden="true">{t("\u2197", locale)}</span></Link></div><div className="hero-footnote"><span className="status-dot"/>{t(" Local-first ", locale)}<span>{t("/", locale)}</span>{t(" Self-hosted ", locale)}<span>{t("/", locale)}</span>{t(" W rozwoju", locale)}</div></div><HomeTree locale={locale}/><div className="hero-bottom"><span>{t("01 \u2014 MNIEJ PLIK\u00D3W BEZ KONTEKSTU. WI\u0118CEJ POWI\u0104ZA\u0143.", locale)}</span><a href={localHref("#idea", locale)}>{t("Przewi\u0144, \u017Ceby zobaczy\u0107 system ", locale)}<span aria-hidden="true">{t("\u2193", locale)}</span></a></div></section>; }
+} = {}) {
+    return <section className="hero container">
+        <div className="hero-copy">
+            <div className="eyebrow"><span className="tiny-square"/>{t(" HOMEINTELCORE / HOME INTELLIGENCE", locale)}</div>
+            <h1>{t("Dom, który pamięta.", locale)}<br /><span>{t("Rozumie. Pomaga.", locale)}</span></h1>
+            <p>{t("Jeden prywatny system łączący domowników, dokumenty, obiekty, urządzenia i codzienne sprawy. Powstaje po to, by rozumieć kontekst domu i pomagać działać — za Twoją zgodą, na Twoim serwerze.", locale)}</p>
+            <div className="hero-actions">
+                <Link className="button primary" href="#idea">{t("Poznaj wizję ", locale)}<Icon name="arrow" size={18}/></Link>
+                <Link className="button secondary" href={localHref("/roadmap/", locale)}>{t("Zobacz kierunek rozwoju ", locale)}<span aria-hidden="true">↗</span></Link>
+            </div>
+            <div className="hero-footnote"><span className="status-dot"/>{t(" Local-first ", locale)}<span>/</span>{t(" Privacy-first ", locale)}<span>/</span>{t(" W rozwoju", locale)}</div>
+        </div>
+        <HomeTree locale={locale}/>
+        <div className="hero-bottom">
+            <span>{t("WIZJA — MNIEJ ZARZĄDZANIA DOMEM. WIĘCEJ CZASU NA ŻYCIE.", locale)}</span>
+            <a href="#idea">{t("Przewiń, żeby poznać system ", locale)}<span aria-hidden="true">↓</span></a>
+        </div>
+    </section>;
+}

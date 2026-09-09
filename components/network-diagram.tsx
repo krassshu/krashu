@@ -1,6 +1,44 @@
 import { t, type Locale } from '@/lib/i18n';
 import { Icon } from './icons';
-const rooms = [{ name: 'Sypialnia', code: '01', ports: ['1 × RJ45'] }, { name: 'Pokój 2', code: '02', ports: ['1 × RJ45'] }, { name: 'Gabinet / Pokój 1', code: '03', ports: ['RJ45 → komputer', 'SFP+ → serwer HomeOS', 'RJ45 → opcjonalny switch'] }, { name: 'Salon', code: '04', ports: ['RJ45 → TV', 'RJ45 → konsola', 'RJ45 → port zapasowy'] }];
+type Room = { name: string; code: string; ports: [string, 'rj45' | 'sfp'][] };
+const rooms: Room[] = [
+    { name: 'Sypialnia', code: '01', ports: [['1 × RJ45 → punkt sieciowy', 'rj45']] },
+    { name: 'Pokój 2', code: '02', ports: [['1 × RJ45 → punkt sieciowy', 'rj45']] },
+    { name: 'Pokój 1', code: '03', ports: [['1 × RJ45 → komputer', 'rj45'], ['1 × SFP+ → serwer / NAS', 'sfp'], ['1 × RJ45 → rezerwa lub mały switch', 'rj45']] },
+    { name: 'Salon', code: '04', ports: [['1 × RJ45 → TV', 'rj45'], ['1 × RJ45 → konsola', 'rj45'], ['1 × RJ45 → rezerwa', 'rj45']] },
+    { name: 'AP dół', code: '05', ports: [['1 × RJ45 → planowany AP', 'rj45']] },
+    { name: 'AP góra', code: '06', ports: [['1 × RJ45 → planowany AP', 'rj45']] },
+];
 export function NetworkDiagram({ locale = "pl" }: {
     locale?: Locale;
-} = {}) { return <figure className="network-diagram"><div className="panel-toolbar"><span>{t("NETWORK / TOPOLOGIA FIZYCZNA", locale)}</span><span>{t("Plan okablowania", locale)}</span></div><div className="network-canvas"><div className="network-source"><span>{t("Internet", locale)}</span><span className="connection" aria-hidden="true">{t("\u2192", locale)}</span><span><Icon name="network" size={18}/>{t(" Router", locale)}</span><span className="connection" aria-hidden="true">{t("\u2192", locale)}</span><div className="switch-node"><Icon name="server" size={24}/><div><small>{t("G\u0141\u00D3WNY SWITCH", locale)}</small><strong>{t("MikroTik CRS310", locale)}</strong><span>{t("CRS310-8G+2S+IN", locale)}</span></div></div></div><div className="network-rooms">{t(rooms.map(room => <article key={room.code} className={room.code === '03' ? 'network-room server-room' : 'network-room'}><div className="room-title"><span>{t(room.code, locale)}</span><h3>{t(room.name, locale)}</h3></div><ul>{t(room.ports.map(port => <li className={port.startsWith('SFP+') ? 'fast-port' : ''} key={port}><span className="port-square"/>{t(port, locale)}</li>), locale)}</ul></article>), locale)}</div><div className="server-link"><Icon name="server" size={18}/><strong>{t("CRS310 ", locale)}<span aria-hidden="true">{t("\u2192", locale)}</span>{t(" SFP+ ", locale)}<span aria-hidden="true">{t("\u2192", locale)}</span>{t(" HomeOS Server", locale)}</strong><span>{t("Szybki link serwera", locale)}</span></div></div><figcaption>{t("Internet prowadzi do routera, a router do g\u0142\u00F3wnego switcha. CRS310 rozprowadza po\u0142\u0105czenia do czterech pomieszcze\u0144. W gabinecie osobny link SFP+ \u0142\u0105czy switch z serwerem HomeOS.", locale)}</figcaption></figure>; }
+} = {}) {
+    const room = (r: Room) => <article key={r.code} className={r.code === '03' ? 'network-room server-room' : 'network-room'}>
+        <div className="room-title"><span>{r.code}</span><h3>{t(r.name, locale)}</h3></div>
+        <ul>{r.ports.map(([port, kind]) => <li className={kind === 'sfp' ? 'fast-port' : ''} key={port}><span className="port-square"/>{t(port, locale)}</li>)}</ul>
+    </article>;
+    return <figure className="network-diagram">
+        <div className="panel-toolbar"><span>{t("NETWORK / TOPOLOGIA FIZYCZNA", locale)}</span><span>{t("plan okablowania", locale)}</span></div>
+        <div className="network-canvas">
+            <div className="network-source">
+                <span>{t("Internet", locale)}</span>
+                <span className="connection" aria-hidden="true">→</span>
+                <span><Icon name="network" size={18}/>{t(" MikroTik RB5009", locale)}</span>
+                <span className="connection" aria-hidden="true">→</span>
+                <span>{t("Patch panel", locale)}</span>
+                <span className="connection" aria-hidden="true">→</span>
+                <div className="switch-node"><Icon name="server" size={24}/><div><small>{t("GŁÓWNY SWITCH", locale)}</small><strong>{t("MikroTik CRS310", locale)}</strong><span>{t("CRS310-8G+2S+IN · 8 × 2.5G RJ45 · 2 × SFP+", locale)}</span></div></div>
+            </div>
+            <div className="network-rooms">
+                {rooms.slice(0, 3).map(room)}
+                <span className="rooms-bus" aria-hidden="true"/>
+                {rooms.slice(3).map(room)}
+            </div>
+            <div className="server-link"><Icon name="server" size={18}/><strong>{t("CRS310 ", locale)}<span aria-hidden="true">→</span>{t(" SFP+ ", locale)}<span aria-hidden="true">→</span>{t(" serwer HomeIntelCore / NAS", locale)}</strong><span>{t("szybki link serwera", locale)}</span></div>
+            <div className="port-budget">
+                <span className="tag planned">{t("bilans portów", locale)}</span>
+                <p>{t("Plan przewiduje dziewięć zakończeń RJ45, a CRS310 udostępnia osiem portów RJ45. Jedno zakończenie musi więc pozostać rezerwą albo zostać obsłużone przez dodatkowy mały switch zarządzalny.", locale)}</p>
+            </div>
+        </div>
+        <figcaption>{t("Internet prowadzi do routera MikroTik RB5009, a ten przez patch panel do głównego switcha CRS310-8G+2S+IN. Switch rozprowadza połączenia do pomieszczeń i planowanych punktów dostępowych na dole i na górze. W Pokoju 1 osobny link SFP+ łączy switch z serwerem HomeIntelCore / NAS. To plan okablowania, a nie wykonana instalacja.", locale)}</figcaption>
+    </figure>;
+}

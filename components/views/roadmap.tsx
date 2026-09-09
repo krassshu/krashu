@@ -3,4 +3,38 @@ import { PageIntro, SectionHeading, BreadcrumbData, Note, TextLink } from '@/com
 import { Roadmap } from '@/components/roadmap';
 export default function RoadmapPage({ locale = "pl" }: {
     locale?: Locale;
-} = {}) { return <><BreadcrumbData label={t("Roadmapa", locale)} path="/roadmap/" locale={locale}/><PageIntro number="04" label={t("Roadmapa", locale)} title={t("System ro\u015Bnie od fundamentu.", locale)} description={t("Najpierw porz\u0105dek w obiektach i dokumentach. Kolejne warstwy maj\u0105 korzysta\u0107 z tego samego kontekstu. Roadmapa opisuje kierunek projektu, bez deklarowanych dat wydania.", locale)} locale={locale}/><section className="container section"><SectionHeading number="01" label={t("ETAPY", locale)} title={t("MVP teraz. Integracje w kolejnych etapach.", locale)} locale={locale}/><Roadmap detailed locale={locale}/><Note locale={locale}>{t("\u201EObecny MVP\u201D oznacza aktualny zakres prac, nie deklaracj\u0119 gotowego wydania. Funkcje oznaczone jako planowane nie s\u0105 prezentowane jako dost\u0119pne.", locale)}</Note></section><section className="container section"><SectionHeading number="02" label={t("ZA\u0141O\u017BENIA ROZWOJU", locale)} title={t("Kontekst pozostaje w Core.", locale)} locale={locale}/><div className="editorial-columns"><article><h3>{t("Najpierw u\u017Cyteczny model", locale)}</h3><p>{t("Dokumenty, obiekty, wyszukiwanie i przypomnienia tworz\u0105 wsp\u00F3ln\u0105 podstaw\u0119. Kolejne modu\u0142y maj\u0105 z niej korzysta\u0107.", locale)}</p></article><article><h3>{t("Integracje jako warstwy", locale)}</h3><p>{t("Kalendarz, Smart Home i monitoring rozszerzaj\u0105 zastosowanie systemu. Nie zmieniaj\u0105 lokalnego modelu w us\u0142ug\u0119 zale\u017Cn\u0105 od chmury.", locale)}</p></article><article><h3>{t("Lokalne AI p\u00F3\u017Aniej", locale)}</h3><p>{t("AI pojawia si\u0119 w planie po zbudowaniu kontekstu danych. Zakres modeli, sprz\u0119tu i funkcji nie zosta\u0142 jeszcze okre\u015Blony.", locale)}</p></article></div><TextLink href={localHref("/documents/", locale)} locale={locale}>{t("Zobacz fundament dokumentowy", locale)}</TextLink></section></>; }
+} = {}) {
+    return <>
+        <BreadcrumbData label={t("Roadmapa", locale)} path="/roadmap/" locale={locale}/>
+        <PageIntro number="04" label={t("Roadmapa", locale)} title={t("System rośnie od fundamentu.", locale)} description={t("Najpierw pamięć domu: obiekty, dokumenty i terminy. Kolejne warstwy mają korzystać z tego samego kontekstu. Roadmapa opisuje kierunek projektu, bez deklarowanych dat wydania.", locale)} locale={locale}/>
+        <section className="container section">
+            <SectionHeading number="01" label={t("SZEŚĆ ETAPÓW", locale)} title={t("Od pamięci domu do Home Box.", locale)} locale={locale}>{t("Każdy etap opisuje nazwę, zakres i status. Tylko pierwszy z nich jest obecnym zakresem prac.", locale)}</SectionHeading>
+            <Roadmap detailed locale={locale}/>
+            <Note locale={locale}>{t("„Obecny fundament” oznacza aktualny zakres prac, a nie deklarację gotowego wydania. Etapy oznaczone jako planowane lub dalsza perspektywa nie są prezentowane jako dostępne funkcje.", locale)}</Note>
+        </section>
+        <section className="container section">
+            <SectionHeading number="02" label={t("MVP A WIZJA DOCELOWA", locale)} title={t("Dwa różne poziomy tego samego projektu.", locale)} locale={locale}/>
+            <div className="table-wrap"><table>
+                <caption>{t("Rozróżnienie między obecnym zakresem a kierunkiem rozwoju", locale)}</caption>
+                <thead><tr><th scope="col">{t("Obszar", locale)}</th><th scope="col">{t("Obecny MVP", locale)}</th><th scope="col">{t("Wizja docelowa", locale)}</th></tr></thead>
+                <tbody>
+                    <tr><th scope="row">{t("Dane", locale)}</th><td>{t("Obiekty, relacje, dokumenty, terminy", locale)}</td><td>{t("Pełny graf wiedzy o domu", locale)}</td></tr>
+                    <tr><th scope="row">{t("Dokumenty", locale)}</th><td>{t("Paperless-ngx, OCR, wyszukiwanie", locale)}</td><td>{t("Automatyczne rozpoznawanie i przypisywanie kontekstu", locale)}</td></tr>
+                    <tr><th scope="row">{t("Urządzenia", locale)}</th><td>{t("Poza zakresem", locale)}</td><td>{t("Home Assistant jako silnik integracji", locale)}</td></tr>
+                    <tr><th scope="row">{t("Monitoring i energia", locale)}</th><td>{t("Poza zakresem", locale)}</td><td>{t("Zdarzenia, kamery i dane energetyczne we wspólnej historii", locale)}</td></tr>
+                    <tr><th scope="row">{t("AI", locale)}</th><td>{t("Poza zakresem", locale)}</td><td>{t("Lokalny asystent działający w granicach uprawnień", locale)}</td></tr>
+                    <tr><th scope="row">{t("Sprzęt", locale)}</th><td>{t("Własny serwer w homelabie", locale)}</td><td>{t("Home Box jako kompletne urządzenie", locale)}</td></tr>
+                </tbody>
+            </table></div>
+        </section>
+        <section className="container section">
+            <SectionHeading number="03" label={t("ZAŁOŻENIA ROZWOJU", locale)} title={t("Kontekst pozostaje w Core.", locale)} locale={locale}/>
+            <div className="editorial-columns">
+                <article><h3>{t("Najpierw użyteczny model", locale)}</h3><p>{t("Dokumenty, obiekty, wyszukiwanie i przypomnienia tworzą wspólną podstawę. Kolejne moduły mają z niej korzystać, zamiast budować własne silosy danych.", locale)}</p></article>
+                <article><h3>{t("Integracje jako warstwy", locale)}</h3><p>{t("Home Assistant, monitoring i energia rozszerzają zastosowanie systemu. Nie zmieniają lokalnego modelu w usługę zależną od chmury.", locale)}</p></article>
+                <article><h3>{t("Lokalne AI później", locale)}</h3><p>{t("AI pojawia się w planie dopiero po zbudowaniu kontekstu danych. Zakres modeli, wymagania sprzętowe i funkcje nie zostały jeszcze określone.", locale)}</p></article>
+            </div>
+            <TextLink href={localHref("/documents/", locale)} locale={locale}>{t("Zobacz fundament dokumentowy", locale)}</TextLink>
+        </section>
+    </>;
+}
