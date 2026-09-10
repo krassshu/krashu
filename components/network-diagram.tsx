@@ -20,12 +20,14 @@ export function NetworkDiagram({ locale = "pl" }: {
         <div className="panel-toolbar"><span>{t("NETWORK / TOPOLOGIA FIZYCZNA", locale)}</span><span>{t("plan okablowania", locale)}</span></div>
         <div className="network-canvas">
             <div className="network-source">
+                <div className="network-upstream">
                 <span>{t("Internet", locale)}</span>
                 <span className="connection" aria-hidden="true">→</span>
                 <span><Icon name="network" size={18}/>{t(" MikroTik RB5009", locale)}</span>
                 <span className="connection" aria-hidden="true">→</span>
                 <span>{t("Patch panel", locale)}</span>
-                <span className="connection" aria-hidden="true">→</span>
+                </div>
+                <span className="uplink-arrow" aria-hidden="true">↓</span>
                 <div className="switch-node"><Icon name="server" size={24}/><div><small>{t("GŁÓWNY SWITCH", locale)}</small><strong>{t("MikroTik CRS310", locale)}</strong><span>{t("CRS310-8G+2S+IN · 8 × 2.5G RJ45 · 2 × SFP+", locale)}</span></div></div>
             </div>
             <div className="network-rooms">

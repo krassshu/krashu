@@ -1,5 +1,5 @@
 import { t, localHref, type Locale } from '@/lib/i18n';
-import Link from 'next/link';
+import Link from '@/components/site-link';
 import { Icon } from './icons';
 import { HomeTree } from './home-tree';
 export function Hero({ locale = "pl" }: {

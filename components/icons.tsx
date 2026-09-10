@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { LogoMark } from './logo-mark';
 export function Icon({ name = 'box', size = 20, style }: { name?: string; size?: number; style?: CSSProperties }) {
  const paths: Record<string,string> = {
  box:'M12 3 3 7.5v9L12 21l9-4.5v-9L12 3ZM3 7.5l9 4.5 9-4.5M12 12v9',
@@ -18,4 +19,6 @@ export function Icon({ name = 'box', size = 20, style }: { name?: string; size?:
  };
  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={style}><path d={paths[name] || paths.box}/></svg>;
 }
-export function Brand(){return <span className="brand"><span className="brand-mark"><Icon name="home" size={21}/></span>Home<span className="brand-os">IntelCore</span></span>}
+export function Brand() {
+  return <span className="brand"><LogoMark /><span className="brand-wordmark"><b>H</b>ome<b>I</b>ntel<b>C</b>ore</span></span>;
+}

@@ -1,6 +1,6 @@
 import { LanguageSwitch } from './language-switch';
 import { t, localHref, type Locale } from '@/lib/i18n';
-import Link from 'next/link';
+import Link from '@/components/site-link';
 import { Brand, Icon } from './icons';
 import { routes } from '@/lib/site';
 export function Header({ locale = "pl" }: {
