@@ -169,6 +169,8 @@ h3 > .status { font-size: var(--fs-label); }
 .site-header { position: sticky; top: 0; z-index: 50; background: var(--header-bg); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border-bottom: 1px solid var(--border); }
 .header-inner { min-height: 60px; display: flex; align-items: center; gap: 28px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; }
+/* Flex, not inline: an inline anchor would add a baseline gap and lift the wordmark above the nav links. */
+.brand-link { display: flex; align-items: center; }
 .brand-link:hover .brand-wordmark { color: var(--accent-ink); }
 .logo-symbol { color: var(--text); display: block; }
 [data-theme="dark"] .logo-symbol { color: #1a1f2a; }
@@ -180,7 +182,7 @@ h3 > .status { font-size: var(--fs-label); }
 .desktop-nav a[aria-current="page"] { color: var(--text); }
 .desktop-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .header-tools { margin-left: auto; display: flex; align-items: center; gap: 14px; }
-.language-switch { display: inline-flex; gap: 6px; font-family: var(--ff-mono); font-size: var(--fs-label); letter-spacing: 0.05em; }
+.language-switch { display: inline-flex; align-items: center; gap: 6px; font-family: var(--ff-mono); font-size: var(--fs-label); letter-spacing: 0.05em; }
 .language-switch a { color: var(--text-2); padding: 6px 2px; }
 .language-switch a:hover { color: var(--text); }
 .language-switch a[aria-current="page"] { color: var(--text); text-decoration: underline; text-underline-offset: 4px; }
