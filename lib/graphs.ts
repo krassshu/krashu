@@ -2,7 +2,7 @@ import type { Status } from './content';
 import { branches, segments } from './content';
 
 /** Node and edge definitions shared by the React Flow diagrams and their mobile/text fallbacks. */
-export type NodeKind = 'user' | 'ui' | 'entry' | 'core' | 'db' | 'queue' | 'provider' | 'service' | 'planned' | 'internet' | 'router' | 'panel' | 'switch' | 'server' | 'client' | 'ap' | 'segment';
+export type NodeKind = 'user' | 'vpn' | 'ui' | 'entry' | 'core' | 'db' | 'queue' | 'provider' | 'service' | 'planned' | 'internet' | 'router' | 'panel' | 'switch' | 'server' | 'client' | 'ap' | 'segment';
 export type FlowNodeData = {
   label: string;
   tech?: string;
@@ -21,8 +21,9 @@ export type GraphDef = { nodes: GraphNode[]; edges: GraphEdge[]; direction: 'TB'
 const width = (kind: NodeKind): number => {
   switch (kind) {
     case 'core': case 'switch': case 'router': return 248;
-    case 'user': case 'internet': return 176;
+    case 'user': case 'internet': return 200;
     case 'planned': return 214;
+    case 'vpn': return 200;
     case 'segment': return 220;
     case 'panel': return 232;
     case 'server': case 'client': case 'ap': return 262;
@@ -42,8 +43,12 @@ const planned: GraphNode[] = [
 
 export function architectureGraph(compact: boolean): GraphDef {
   const nodes: GraphNode[] = [
-    n('user', { label: 'Użytkownik', kind: 'user' }),
-    ...(compact ? [] : [n('caddy', { label: 'Caddy', role: 'reverse proxy w LAN', status: 'lab', kind: 'entry' })]),
+    n('user', { label: 'Użytkownik', role: compact ? undefined : 'w sieci domowej', kind: 'user' }),
+    ...(compact ? [] : [
+      n('remote', { label: 'Użytkownik', role: 'spoza LAN, zdalnie', kind: 'user' }),
+      n('wg', { label: 'WireGuard', role: 'VPN, wejście do LAN', status: 'planned', kind: 'vpn' }),
+      n('caddy', { label: 'Caddy', role: 'reverse proxy w LAN', status: 'lab', kind: 'entry' }),
+    ]),
     n('next', { label: 'Next.js', role: 'interfejs użytkownika', status: 'lab', kind: 'ui' }),
     n('core', { label: 'Core', role: compact ? 'obiekty, relacje, terminy' : 'obiekty, relacje, uprawnienia, terminy', status: 'lab', kind: 'core' }),
     n('pg', { label: 'PostgreSQL', role: compact ? 'dane Core' : 'baza Core: obiekty i relacje', status: 'lab', kind: 'db' }),
@@ -53,16 +58,14 @@ export function architectureGraph(compact: boolean): GraphDef {
     n('pg2', { label: 'PostgreSQL', role: 'baza Paperless', status: 'lab', kind: 'db' }),
     n('gotenberg', { label: 'Gotenberg', role: 'konwersja plików', status: 'lab', kind: 'service' }),
     ...planned,
-    ...(compact ? [] : [n('wg', { label: 'WireGuard', role: 'dostęp zdalny', status: 'planned', kind: 'planned' })]),
   ];
   const edges: GraphEdge[] = [
-    ...(compact ? [e('user', 'next')] : [e('user', 'caddy'), e('caddy', 'next')]),
+    ...(compact ? [e('user', 'next')] : [e('user', 'caddy'), e('remote', 'wg', undefined, 'planned'), e('wg', 'caddy', undefined, 'planned'), e('caddy', 'next')]),
     e('next', 'core'),
     e('core', 'pg'), e('core', 'queue'), e('core', 'provider'),
     e('provider', 'paperless'),
     e('paperless', 'pg2'), e('paperless', 'gotenberg'),
     ...planned.map(p => e('core', p.id, undefined, 'planned', compact ? 3 : 4)),
-    ...(compact ? [] : [e('core', 'wg', undefined, 'planned', 4)]),
   ];
   return { nodes, edges, direction: 'TB' };
 }
@@ -84,7 +87,7 @@ export function networkPhysicalGraph(compact: boolean): GraphDef {
       n('server', { label: 'Serwer HomeIntelCore / NAS', role: 'usługi i dane', status: 'planned', kind: 'server' }),
       n('pc', { label: 'Komputer i rezerwa', role: '2 × RJ45', status: 'planned', kind: 'client' }),
       n('outlets', { label: 'Punkty sieciowe', role: '5 × RJ45: sypialnia, pokój 2, salon', status: 'planned', kind: 'client' }),
-      n('aps', { label: '2 × punkt dostępowy', role: 'dół i góra', status: 'planned', kind: 'ap' }),
+      n('aps', { label: '2 punkty dostępowe', role: 'dół i góra', status: 'planned', kind: 'ap' }),
     );
     edges.push(e('crs310', 'server', 'SFP+', 'fast'), e('crs310', 'pc', 'RJ45 · 2.5G'), e('crs310', 'outlets', 'RJ45 · 2.5G'), e('crs310', 'aps', 'RJ45 · 2.5G', 'planned'));
   } else {

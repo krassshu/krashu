@@ -55,13 +55,23 @@ export default function Network({ locale = 'pl' }: { locale?: Locale } = {}) {
       <div className="split split-4-8">
         <div>
           <SectionHeading id="cabling" title="Notatki o okablowaniu" locale={locale} />
-          <p>{T('Plan przewiduje dziewięć zakończeń RJ45 oraz jeden link SFP+ do serwera. CRS310-8G+2S+IN ma osiem portów RJ45, więc jedno zakończenie musi pozostać rezerwą albo zostać obsłużone przez dodatkowy mały switch zarządzalny.')}</p>
+          <p>{T('Plan przewiduje dziewięć zakończeń RJ45 oraz link SFP+ do serwera. CRS310-8G+2S+IN ma osiem portów RJ45 i dwa porty SFP+, a jeden port zajmie uplink z RB5009. Medium tego uplinku nie zostało jeszcze wybrane, więc bilans zależy od scenariusza.')}</p>
         </div>
+        <div>
         <div className="table-wrap"><table className="cabling-table">
           <caption>{T('Planowane zakończenia okablowania')}</caption>
           <thead><tr><th scope="col">{T('Połączenie')}</th><th scope="col">{T('Przeznaczenie')}</th><th scope="col">{T('Pomieszczenie')}</th></tr></thead>
           <tbody>{branches.map((b, i) => <tr key={i} className={b.fast ? 'row-fast' : undefined}><th scope="row"><span className="mono">{b.count ?? 1} × {b.port}</span></th><td data-label={T('Przeznaczenie')}>{T(b.target)}</td><td data-label={T('Pomieszczenie')}>{T(b.room)}</td></tr>)}</tbody>
         </table></div>
+        <div className="table-wrap"><table className="budget-table">
+            <caption>{T('Bilans portów CRS310 dla dziewięciu zakończeń RJ45')}</caption>
+            <thead><tr><th scope="col">{T('Uplink RB5009 → CRS310')}</th><th scope="col">{T('Wolne porty RJ45')}</th><th scope="col">{T('Brakuje')}</th></tr></thead>
+            <tbody>
+              <tr><th scope="row"><span className="mono">SFP+</span></th><td data-label={T('Wolne porty RJ45')}>8</td><td data-label={T('Brakuje')}>{T('1 zakończenie: rezerwa albo dodatkowy mały switch')}</td></tr>
+              <tr><th scope="row"><span className="mono">RJ45</span></th><td data-label={T('Wolne porty RJ45')}>7</td><td data-label={T('Brakuje')}>{T('2 zakończenia: rezerwa albo dodatkowy mały switch')}</td></tr>
+            </tbody>
+        </table></div>
+        </div>
       </div>
     </section>
 
@@ -74,7 +84,7 @@ export default function Network({ locale = 'pl' }: { locale?: Locale } = {}) {
             <li>{T('moduły SFP+ i medium dla uplinku')}</li>
             <li>{T('identyfikatory VLAN, podsieci i reguły firewalla')}</li>
             <li>{T('modele planowanych punktów dostępowych')}</li>
-            <li>{T('ewentualny dodatkowy mały switch zarządzalny dla dziewiątego zakończenia RJ45')}</li>
+            <li>{T('dodatkowy mały switch zarządzalny dla jednego lub dwóch zakończeń RJ45, zależnie od medium uplinku')}</li>
           </ul>
           <TextLink href="/architecture/" locale={locale}>{T('Zobacz usługi na serwerze HomeIntelCore')}</TextLink>
         </div>

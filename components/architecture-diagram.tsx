@@ -10,9 +10,16 @@ function Node({ name, role, kind, locale }: { name: string; role?: string; kind?
 /** Vertical HTML tree used under 768px, where an interactive canvas would be too small to read. */
 function ArchitectureTree({ compact, locale }: { compact: boolean; locale: Locale }) {
   return <div className="arch-body">
+    {compact ? null : <div className="arch-entry">
+      <Node name={t('Użytkownik', locale)} role="w sieci domowej" locale={locale} />
+      <div className="arch-entry-remote">
+        <Node name={t('Użytkownik zdalny', locale)} role="spoza LAN" locale={locale} />
+        <span className="arch-entry-link" aria-hidden="true" />
+        <Node name="WireGuard" role="VPN, wejście do LAN, planowane" kind="planned" locale={locale} />
+      </div>
+    </div>}
     <ol className="arch-chain">
-      <li><Node name={t('Użytkownik', locale)} locale={locale} /></li>
-      {compact ? null : <li><Node name="Caddy" role="reverse proxy w LAN" locale={locale} /></li>}
+      {compact ? <li><Node name={t('Użytkownik', locale)} locale={locale} /></li> : <li><Node name="Caddy" role="reverse proxy w LAN" locale={locale} /></li>}
       <li><Node name="Next.js" role="interfejs użytkownika" locale={locale} /></li>
       <li><Node name="Core" role="obiekty, relacje, uprawnienia, terminy" kind="core" locale={locale} /></li>
     </ol>
@@ -27,7 +34,7 @@ function ArchitectureTree({ compact, locale }: { compact: boolean; locale: Local
     </div>
     <div className="arch-planned">
       <div className="arch-planned-head"><StatusBadge status="planned" locale={locale} /></div>
-      <ul>{['Home Assistant', 'Monitoring / NVR', 'Energia', 'Lokalne AI', ...(compact ? [] : ['WireGuard'])].map(name => <li key={name}><Node name={t(name, locale)} kind="planned" locale={locale} /></li>)}</ul>
+      <ul>{['Home Assistant', 'Monitoring / NVR', 'Energia', 'Lokalne AI'].map(name => <li key={name}><Node name={t(name, locale)} kind="planned" locale={locale} /></li>)}</ul>
     </div>
   </div>;
 }
@@ -40,5 +47,5 @@ export function ArchitectureDiagram({ compact = false, locale = 'pl' }: { compac
     fallback={<ArchitectureTree compact={compact} locale={locale} />}
     caption={t(compact
       ? 'Najedź na węzeł albo ustaw na nim fokus, żeby zobaczyć jego bezpośrednie zależności. Home Assistant, monitoring, energia i lokalne AI są planowane.'
-      : 'Użytkownik korzysta z interfejsu Next.js za Caddy, a interfejs z Core. Core przechowuje model obiektów w PostgreSQL, zleca pracę w tle kolejce zadań i sięga po dokumenty przez DocumentProvider, który łączy go z Paperless-ngx wraz z jego bazą PostgreSQL i usługą Gotenberg. Home Assistant, monitoring, energia, lokalne AI i WireGuard są planowane i nie zostały wdrożone.', locale)} />;
+      : 'Użytkownik w sieci domowej korzysta z interfejsu Next.js za Caddy, a interfejs z Core. Użytkownik spoza LAN ma docelowo wchodzić przez WireGuard do sieci domowej i dalej tą samą ścieżką; WireGuard jest warstwą sieciową, nie integracją Core. Core przechowuje model obiektów w PostgreSQL, zleca pracę w tle kolejce zadań i sięga po dokumenty przez DocumentProvider, który łączy go z Paperless-ngx wraz z jego bazą PostgreSQL i usługą Gotenberg. Home Assistant, monitoring, energia i lokalne AI są planowanymi integracjami.', locale)} />;
 }

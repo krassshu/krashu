@@ -25,7 +25,7 @@ export function StatusPanel({ locale = 'pl' }: { locale?: Locale }) {
         <StatusBadge status="active" locale={locale} />
       </div>
       <ul className="status-rows">{running.map(([name, role]) => <li key={name}><span className="mono">{t(name, locale)}</span><span className="status-rows-role">{t(role, locale)}</span><span className="status-rows-state status-lab"><span className="status-dot" aria-hidden="true" />{t('lab', locale)}</span></li>)}</ul>
-      <p className="status-card-foot">{t('Usługi uruchomione w laboratorium projektu na własnym serwerze. To środowisko testowe, nie wdrożony produkt.', locale)}</p>
+      <p className="status-card-foot">{t('Komponenty uruchomione w laboratorium projektu na własnym serwerze. To środowisko testowe, nie wdrożony produkt.', locale)}</p>
     </div>
     <div className="status-side">
       <div className="status-card">

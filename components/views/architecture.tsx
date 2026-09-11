@@ -17,7 +17,6 @@ const integrations: [string, string][] = [
   ['Monitoring / NVR', 'kamery i lokalna rejestracja obrazu'],
   ['Energia', 'falownik, magazyn energii, licznik, ładowarka EV'],
   ['Lokalne AI', 'wyszukiwanie semantyczne i odpowiedzi w kontekście domu'],
-  ['WireGuard', 'jedyna droga dostępu spoza LAN'],
 ];
 
 export default function Architecture({ locale = 'pl' }: { locale?: Locale } = {}) {
@@ -26,7 +25,7 @@ export default function Architecture({ locale = 'pl' }: { locale?: Locale } = {}
     <BreadcrumbData label="Architektura" path="/architecture/" locale={locale} />
     <PageIntro label="Architektura" title="Architektura" locale={locale}
       description="HomeIntelCore składa się z własnego Core i kilku wyspecjalizowanych usług uruchamianych razem przez Docker Compose. Ta strona opisuje zależności między nimi w obecnym laboratorium oraz miejsca, w które mają dołączyć planowane integracje. Nie jest specyfikacją portów, uwierzytelniania ani reguł dostępu."
-      meta={<dl className="meta-list"><div><dt>{T('Środowisko')}</dt><dd>{T('własny serwer, Docker Compose')}</dd></div><div><dt>{T('Usługi w laboratorium')}</dt><dd>8</dd></div><div><dt>{T('Stan')}</dt><dd><StatusBadge status="lab" locale={locale} /></dd></div></dl>} />
+      meta={<dl className="meta-list"><div><dt>{T('Środowisko')}</dt><dd>{T('własny serwer, Docker Compose')}</dd></div><div><dt>{T('Warstwa dokumentów')}</dt><dd className="mono">Paperless-ngx 3.0.4</dd></div><div><dt>{T('Stan')}</dt><dd><StatusBadge status="lab" locale={locale} /></dd></div></dl>} />
 
     <section className="section-row container">
       <ArchitectureDiagram locale={locale} />
@@ -60,14 +59,14 @@ export default function Architecture({ locale = 'pl' }: { locale?: Locale } = {}
     </section>
 
     <section className="section container" aria-labelledby="services">
-      <SectionHeading id="services" title="Usługi i ich status" locale={locale}>{T('Pierwsza grupa działa w aktualnym laboratorium. Druga opisuje integracje planowane, których jeszcze nie zbudowano.')}</SectionHeading>
+      <SectionHeading id="services" title="Komponenty i ich status" locale={locale}>{T('Pierwsza grupa działa w aktualnym laboratorium: aplikacja, bazy, usługi pomocnicze i sposób ich uruchomienia. Druga opisuje warstwy planowane, których jeszcze nie zbudowano.')}</SectionHeading>
       <TechTable locale={locale} />
-      <Note locale={locale}>{T('„W laboratorium” oznacza usługę uruchomioną w środowisku testowym projektu, a nie gotowy, wdrożony produkt.')}</Note>
+      <Note locale={locale}>{T('„W laboratorium” oznacza komponent uruchomiony w środowisku testowym projektu, a nie gotowy, wdrożony produkt.')}</Note>
     </section>
 
     <section className="section-row container" aria-labelledby="integrations">
-      <SectionHeading id="integrations" title="Planowane integracje" locale={locale}>{T('Każda z tych warstw ma dołączyć do Core przez własną granicę integracji, tak jak dokumenty przez DocumentProvider.')}</SectionHeading>
-      <div className="card-grid card-grid-5">{integrations.map(([name, role]) => <article key={name} className="card card-planned"><span className="mono">{T(name)}</span><p>{T(role)}</p><StatusBadge status="planned" locale={locale} /></article>)}</div>
+      <SectionHeading id="integrations" title="Planowane integracje" locale={locale}>{T('Każda z tych warstw ma dołączyć do Core przez własną granicę integracji, tak jak dokumenty przez DocumentProvider. WireGuard nie jest integracją aplikacyjną: to planowana warstwa sieciowa, przez którą użytkownik spoza LAN ma trafiać do tego samego wejścia co w domu.')}</SectionHeading>
+      <div className="card-grid card-grid-4">{integrations.map(([name, role]) => <article key={name} className="card card-planned"><span className="mono">{T(name)}</span><p>{T(role)}</p><StatusBadge status="planned" locale={locale} /></article>)}</div>
       <TextLink href="/network/" locale={locale}>{T('Zobacz sieć, w której działa serwer')}</TextLink>
     </section>
   </>;

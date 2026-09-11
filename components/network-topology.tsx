@@ -7,7 +7,7 @@ import { ModeTabs } from './mode-tabs';
 
 function PhysicalTree({ compact, locale }: { compact: boolean; locale: Locale }) {
   const rows = compact
-    ? [{ port: 'SFP+', target: t('Serwer HomeIntelCore / NAS', locale), fast: true }, { port: '2 × RJ45', target: t('Komputer i rezerwa', locale) }, { port: '5 × RJ45', target: t('Punkty sieciowe', locale) }, { port: '2 × RJ45', target: t('2 × punkt dostępowy', locale), planned: true }]
+    ? [{ port: 'SFP+', target: t('Serwer HomeIntelCore / NAS', locale), fast: true }, { port: '2 × RJ45', target: t('Komputer i rezerwa', locale) }, { port: '5 × RJ45', target: t('Punkty sieciowe', locale) }, { port: '2 × RJ45', target: t('2 punkty dostępowe', locale), planned: true }]
     : branches.map(b => ({ port: `${b.count ? `${b.count} × ` : ''}${b.port}`, target: t(b.target, locale), room: t(b.room, locale), fast: b.fast, planned: b.planned }));
   return <div className="topo-body">
     <ol className="topo-chain">
@@ -42,7 +42,7 @@ export function NetworkPreview({ locale = 'pl' }: { locale?: Locale }) {
 export function NetworkExplorer({ locale = 'pl' }: { locale?: Locale }) {
   const physical = <FlowFigure graph={networkPhysicalGraph(false)} locale={locale} title="TOPOLOGIA FIZYCZNA" meta="plan okablowania" ariaLabel="Planowana topologia fizyczna sieci domowej" height={760}
     fallback={<PhysicalTree compact={false} locale={locale} />}
-    caption={t('Internet prowadzi do routera MikroTik RB5009, a ten przez patch panel do głównego switcha CRS310-8G+2S+IN. Switch rozprowadza połączenia do pomieszczeń i planowanych punktów dostępowych, a osobny link SFP+ prowadzi do serwera HomeIntelCore / NAS. Numery portów i moduły SFP+ nie zostały określone; przycisk szczegółów przy węźle pokazuje, co jest ustalone.', locale)} />;
+    caption={t('Internet prowadzi do routera MikroTik RB5009, a ten przez patch panel do głównego switcha CRS310-8G+2S+IN. Patch panel jest elementem pasywnym: tylko zakańcza okablowanie, niczego nie przełącza ani nie routuje. Switch rozprowadza połączenia do pomieszczeń i planowanych punktów dostępowych, a osobny link SFP+ prowadzi do serwera HomeIntelCore / NAS. Numery portów i moduły SFP+ nie zostały określone; przycisk szczegółów przy węźle pokazuje, co jest ustalone.', locale)} />;
   const logical = <FlowFigure graph={networkLogicalGraph()} locale={locale} title="SEGMENTACJA LOGICZNA" meta="koncepcja" ariaLabel="Koncepcja segmentacji logicznej sieci domowej" height={700}
     fallback={<LogicalTree locale={locale} />}
     caption={t('Siedem segmentów porządkuje role urządzeń niezależnie od kabli. Identyfikatory VLAN, podsieci, przypisania portów i reguły firewalla nie zostały jeszcze określone, a sam podział nie definiuje dozwolonego ruchu między segmentami.', locale)} />;

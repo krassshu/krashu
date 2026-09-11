@@ -1,6 +1,7 @@
 import type { NodeKind } from '@/lib/graphs';
 const paths: Partial<Record<NodeKind, string>> = {
   user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0',
+  vpn: 'M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Zm0 7v4',
   ui: 'M3 5h18v12H3zM8 21h8M12 17v4',
   entry: 'M4 12h11m-4-4 4 4-4 4M15 4h5v16h-5',
   core: 'M8 8h8v8H8zM12 3v5m0 8v5M3 12h5m8 0h5',
