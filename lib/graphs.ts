@@ -17,21 +17,17 @@ export type GraphNode = { id: string; data: FlowNodeData; width: number; height:
 export type GraphEdge = { id: string; source: string; target: string; label?: string; kind?: 'default' | 'planned' | 'fast'; minlen?: number };
 export type GraphDef = { nodes: GraphNode[]; edges: GraphEdge[]; direction: 'TB' | 'LR' };
 
-/** Width by role in the diagram, height by how many text lines the node carries (label, model, metadata). */
-const width = (kind: NodeKind): number => {
+/** Fixed geometry per role. Siblings share one size; only the root is larger and endpoints are smaller pills. */
+const geometry = (kind: NodeKind): [number, number] => {
   switch (kind) {
-    case 'core': case 'switch': case 'router': return 248;
-    case 'user': case 'internet': return 200;
-    case 'planned': return 214;
-    case 'vpn': return 200;
-    case 'segment': return 220;
-    case 'panel': return 232;
-    case 'server': case 'client': case 'ap': return 262;
-    default: return 224;
+    case 'core': return [264, 112];
+    case 'user': case 'internet': return [188, 56];
+    case 'switch': case 'router': return [248, 100];
+    case 'server': case 'client': case 'ap': return [236, 114];
+    default: return [236, 100];
   }
 };
-const height = (data: FlowNodeData): number => 40 + (data.tech ? 17 : 0) + (data.role ? (data.role.length > 26 ? 31 : 17) : 0) + (['server', 'client', 'ap'].includes(data.kind) ? 14 : 0);
-const n = (id: string, data: FlowNodeData): GraphNode => ({ id, data, width: width(data.kind), height: height(data) });
+const n = (id: string, data: FlowNodeData): GraphNode => { const [width, height] = geometry(data.kind); return { id, data, width, height }; };
 const e = (source: string, target: string, label?: string, kind: GraphEdge['kind'] = 'default', minlen?: number): GraphEdge => ({ id: `${source}-${target}`, source, target, label, kind, minlen });
 
 const planned: GraphNode[] = [

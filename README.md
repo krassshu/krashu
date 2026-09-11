@@ -36,6 +36,7 @@ npm test
 - `pages.spec.ts` — każda z dziesięciu tras (PL i EN) przy szerokościach 390, 768 i 1440 px: status 200, brak poziomego przewijania, dokładnie jeden `h1`, brak błędów konsoli; dodatkowo przekierowanie `/en` → `/en/` (308).
 - `hover.spec.ts` — hover na `.card`, `.status-card`, `.hero-module`, `.stage`, `.fnode`, `.relation-node` i `.button` nie zmienia wymiarów elementu ani wysokości jego rodzica (tolerancja 0,5 px). Diagramy React Flow montują się dopiero od 1024 px, więc test czeka na `.react-flow`.
 - `interactions.spec.ts` — zakładki topologii sieci, przełączanie łańcuchów w Object Engine bez skoku wysokości, menu mobilne, przełącznik języka i przełącznik motywu.
+- `diagrams.spec.ts` — geometria węzłów diagramów: moduły hero, węzły React Flow (w obrębie jednej warstwy), etapy roadmapy i węzły Object Engine mają równe wymiary, ich zawartość nie wychodzi poza kafelek, a hover nie zmienia rozmiaru; dodatkowo układ 2 × 2 modułów przy 390 i 430 px.
 - `a11y.spec.ts` — skan axe (`@axe-core/playwright`) na `/`, `/en/`, `/network/` i `/documents/`; test nie przechodzi przy naruszeniach o wadze `serious` lub `critical`, pozostałe są wypisywane.
 
 ## Docker

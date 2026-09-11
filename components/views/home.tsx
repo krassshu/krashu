@@ -22,10 +22,10 @@ function structuredData(locale: Locale) {
 export default function Home({ locale = 'pl' }: { locale?: Locale } = {}) {
   const T = (s: string) => t(s, locale);
   const modules = [
-    { id: 'documents', label: T('Dokumenty'), status: T('w laboratorium'), note: T('Paperless-ngx, OCR i wyszukiwanie za granicą DocumentProvider. Pierwszy wdrażany moduł.') },
-    { id: 'objects', label: T('Obiekty'), status: T('w laboratorium'), note: T('Osoby, domy, pojazdy, urządzenia i ich relacje w Core, z uprawnieniami i terminami.') },
-    { id: 'network', label: T('Sieć'), status: T('plan'), note: T('MikroTik RB5009 i CRS310 z osobnym linkiem SFP+ do serwera. Okablowanie jeszcze niewykonane.'), planned: true },
-    { id: 'automation', label: T('Automatyka'), status: T('planowane'), note: T('Home Assistant jako silnik integracji, sterowanie i rutyny w granicach zgody użytkownika.'), planned: true },
+    { id: 'documents', icon: 'service' as const, label: T('Dokumenty'), status: T('w laboratorium'), note: T('Paperless-ngx, OCR i wyszukiwanie za granicą DocumentProvider. Pierwszy wdrażany moduł.') },
+    { id: 'objects', icon: 'core' as const, label: T('Obiekty'), status: T('w laboratorium'), note: T('Osoby, domy, pojazdy, urządzenia i ich relacje w Core, z uprawnieniami i terminami.') },
+    { id: 'network', icon: 'switch' as const, label: T('Sieć'), status: T('plan'), note: T('MikroTik RB5009 i CRS310 z osobnym linkiem SFP+ do serwera. Okablowanie jeszcze niewykonane.'), planned: true },
+    { id: 'automation', icon: 'ap' as const, label: T('Automatyka'), status: T('planowane'), note: T('Home Assistant jako silnik integracji, sterowanie i rutyny w granicach zgody użytkownika.'), planned: true },
   ];
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(locale)).replace(/</g, '\\u003c') }} />

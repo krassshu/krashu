@@ -1,5 +1,6 @@
 import { t, type Locale } from '@/lib/i18n';
 import { StatusBadge } from './status-badge';
+import { NodeStatus } from './node-status';
 import { milestones } from '@/lib/content';
 
 const running: [string, string][] = [
@@ -24,7 +25,7 @@ export function StatusPanel({ locale = 'pl' }: { locale?: Locale }) {
         <div><span className="technical-label">{t('OBECNY ETAP', locale)}</span><h3>Home Memory</h3></div>
         <StatusBadge status="active" locale={locale} />
       </div>
-      <ul className="status-rows">{running.map(([name, role]) => <li key={name}><span className="mono">{t(name, locale)}</span><span className="status-rows-role">{t(role, locale)}</span><span className="status-rows-state status-lab"><span className="status-dot" aria-hidden="true" />{t('lab', locale)}</span></li>)}</ul>
+      <ul className="status-rows">{running.map(([name, role]) => <li key={name}><span className="mono">{t(name, locale)}</span><span className="status-rows-role">{t(role, locale)}</span><NodeStatus status="lab" className="status-rows-state">{t('lab', locale)}</NodeStatus></li>)}</ul>
       <p className="status-card-foot">{t('Komponenty uruchomione w laboratorium projektu na własnym serwerze. To środowisko testowe, nie wdrożony produkt.', locale)}</p>
     </div>
     <div className="status-side">

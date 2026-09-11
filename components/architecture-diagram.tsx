@@ -43,7 +43,7 @@ export function ArchitectureDiagram({ compact = false, locale = 'pl' }: { compac
   return <FlowFigure graph={architectureGraph(compact)} locale={locale} className={compact ? 'diagram-compact' : undefined}
     title="ARCHITEKTURA LOGICZNA" meta={compact ? 'skrót' : 'Docker Compose, własny serwer'}
     ariaLabel={compact ? 'Uproszczony schemat zależności HomeIntelCore' : 'Zależności usług HomeIntelCore w obecnym laboratorium'}
-    height={compact ? 600 : 760}
+    height={compact ? 640 : 820}
     fallback={<ArchitectureTree compact={compact} locale={locale} />}
     caption={t(compact
       ? 'Najedź na węzeł albo ustaw na nim fokus, żeby zobaczyć jego bezpośrednie zależności. Home Assistant, monitoring, energia i lokalne AI są planowane.'

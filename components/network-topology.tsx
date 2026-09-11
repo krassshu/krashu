@@ -33,17 +33,17 @@ function LogicalTree({ locale }: { locale: Locale }) {
 
 /** Homepage preview: physical chain only. */
 export function NetworkPreview({ locale = 'pl' }: { locale?: Locale }) {
-  return <FlowFigure graph={networkPhysicalGraph(true)} locale={locale} className="diagram-compact" title="TOPOLOGIA FIZYCZNA" meta="plan okablowania" ariaLabel="Planowana topologia fizyczna sieci domowej" height={440}
+  return <FlowFigure graph={networkPhysicalGraph(true)} locale={locale} className="diagram-compact" title="TOPOLOGIA FIZYCZNA" meta="plan okablowania" ariaLabel="Planowana topologia fizyczna sieci domowej" height={480}
     fallback={<PhysicalTree compact locale={locale} />}
     caption={<>{t('Internet prowadzi do routera RB5009, a ten do głównego switcha CRS310. Serwer dostaje osobny link SFP+, pozostałe zakończenia to porty 2.5G RJ45. Okablowanie nie zostało wykonane.', locale)} <span className="mono">{segments.map(s => s.name).join(' · ')}</span> <StatusBadge status="concept" locale={locale} /></>} />;
 }
 
 /** Full page: physical and logical views behind accessible tabs. */
 export function NetworkExplorer({ locale = 'pl' }: { locale?: Locale }) {
-  const physical = <FlowFigure graph={networkPhysicalGraph(false)} locale={locale} title="TOPOLOGIA FIZYCZNA" meta="plan okablowania" ariaLabel="Planowana topologia fizyczna sieci domowej" height={760}
+  const physical = <FlowFigure graph={networkPhysicalGraph(false)} locale={locale} title="TOPOLOGIA FIZYCZNA" meta="plan okablowania" ariaLabel="Planowana topologia fizyczna sieci domowej" height={880}
     fallback={<PhysicalTree compact={false} locale={locale} />}
     caption={t('Internet prowadzi do routera MikroTik RB5009, a ten przez patch panel do głównego switcha CRS310-8G+2S+IN. Patch panel jest elementem pasywnym: tylko zakańcza okablowanie, niczego nie przełącza ani nie routuje. Switch rozprowadza połączenia do pomieszczeń i planowanych punktów dostępowych, a osobny link SFP+ prowadzi do serwera HomeIntelCore / NAS. Numery portów i moduły SFP+ nie zostały określone; przycisk szczegółów przy węźle pokazuje, co jest ustalone.', locale)} />;
-  const logical = <FlowFigure graph={networkLogicalGraph()} locale={locale} title="SEGMENTACJA LOGICZNA" meta="koncepcja" ariaLabel="Koncepcja segmentacji logicznej sieci domowej" height={700}
+  const logical = <FlowFigure graph={networkLogicalGraph()} locale={locale} title="SEGMENTACJA LOGICZNA" meta="koncepcja" ariaLabel="Koncepcja segmentacji logicznej sieci domowej" height={800}
     fallback={<LogicalTree locale={locale} />}
     caption={t('Siedem segmentów porządkuje role urządzeń niezależnie od kabli. Identyfikatory VLAN, podsieci, przypisania portów i reguły firewalla nie zostały jeszcze określone, a sam podział nie definiuje dozwolonego ruchu między segmentami.', locale)} />;
   return <ModeTabs label={t('Widok sieci', locale)} tabs={[{ id: 'physical', label: t('Fizyczna', locale), content: physical }, { id: 'logical', label: t('Logiczna', locale), content: logical }]} />;

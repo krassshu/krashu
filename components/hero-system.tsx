@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
+import { NodeIcon } from './flow/node-icon';
+import { NodeStatus } from './node-status';
+import type { NodeKind } from '@/lib/graphs';
 
-export type HeroModule = { id: string; label: string; note: string; status: string; planned?: boolean };
+export type HeroModule = { id: string; label: string; note: string; status: string; icon: NodeKind; planned?: boolean };
 
 /** Core with its modules. Lines draw once; hovering or focusing a module lights its link. */
 export function HeroSystem({ core, modules, caption }: { core: { label: string; note: string }; modules: HeroModule[]; caption: string }) {
@@ -26,8 +29,8 @@ export function HeroSystem({ core, modules, caption }: { core: { label: string; 
         <button type="button" className={`hero-module${m.planned ? ' hero-module-planned' : ''}${active === m.id ? ' hero-module-active' : ''}`}
           onMouseEnter={() => setActive(m.id)} onMouseLeave={() => setActive(null)} onFocus={() => setActive(m.id)} onBlur={() => setActive(null)} onClick={() => setActive(active === m.id ? null : m.id)}
           aria-pressed={active === m.id} aria-describedby="hero-module-note">
-          <span className="hero-module-label">{m.label}</span>
-          <span className={`hero-module-status status-${m.planned ? 'planned' : 'lab'}`}><span className="status-dot" aria-hidden="true" />{m.status}</span>
+          <span className="hero-module-head"><span className="hero-module-icon" aria-hidden="true"><NodeIcon kind={m.icon} size={14} /></span><span className="hero-module-label">{m.label}</span></span>
+          <NodeStatus status={m.planned ? 'planned' : 'lab'} className="hero-module-status">{m.status}</NodeStatus>
         </button>
       </li>)}
     </ul>

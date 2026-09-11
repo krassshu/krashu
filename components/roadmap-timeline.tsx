@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Tabs } from '@base-ui/react/tabs';
+import { NodeStatus } from './node-status';
 
 export type Stage = { stage: string; name: string; status: 'active' | 'planned' | 'future'; statusLabel: string; features: string[]; description: string };
 
@@ -13,7 +14,7 @@ export function RoadmapTimeline({ stages, label, modulesLabel, compact = false }
         <span className="stage-marker" aria-hidden="true" />
         <span className="stage-number mono">{s.stage}</span>
         <span className="stage-name">{s.name}</span>
-        <span className={`stage-status status-${s.status}`}><span className="status-dot" aria-hidden="true" />{s.statusLabel}</span>
+        <NodeStatus status={s.status} className="stage-status">{s.statusLabel}</NodeStatus>
       </Tabs.Tab>)}
     </Tabs.List>
     <div className="tab-stack">
