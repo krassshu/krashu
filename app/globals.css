@@ -85,7 +85,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; -webkit-text-size-adjust: 100%; }
+html { scroll-padding-top: 80px; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
   font-family: var(--ff-sans); font-size: var(--fs-body); line-height: 1.6;
@@ -587,7 +587,6 @@ figcaption .status { margin-left: 4px; }
   .initial-loader { bottom: 12px; right: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .navigation-loader { opacity: 1; }
   .loader-track > span, .navigation-loader-line { width: 100%; transform: none; }

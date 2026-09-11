@@ -1,11 +1,12 @@
 import { t, localHref, type Locale } from '@/lib/i18n';
 import Link from '@/components/site-link';
+import { AnchorLink } from './anchor-link';
 import type { ReactNode } from 'react';
 import { Arrow } from './icons';
 import { siteUrl } from '@/lib/site';
 
 export function TextLink({ href, children, locale = 'pl' }: { href: string; children: ReactNode; locale?: Locale }) {
-  return <Link className="text-link" href={localHref(href, locale)}>{t(children, locale)}<Arrow /></Link>;
+  return <AnchorLink className="text-link" href={localHref(href, locale)}>{t(children, locale)}<Arrow /></AnchorLink>;
 }
 
 

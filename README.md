@@ -31,12 +31,15 @@ Build używa Webpacka, zachowując poprawkę repozytorium dla Alpine.
 npm test
 ```
 
+Płynne przewijanie celowo nie jest zadeklarowane globalnie w CSS: animowałoby resety przewijania wykonywane przez router i zostawiało nową podstronę w połowie strony. Obsługuje je `components/anchor-link.tsx` dla kotwic w obrębie strony, z poszanowaniem `prefers-reduced-motion`.
+
 `npm test` uruchamia Playwright (`playwright.config.ts`). Konfiguracja sama buduje projekt (z `SITE_OUTPUT=server`, czyli bez trybu standalone) i startuje `next start` na porcie **3113**; poza CI istniejący serwer na tym porcie jest ponownie wykorzystywany. Testy w `tests/`:
 
 - `pages.spec.ts` — każda z dziesięciu tras (PL i EN) przy szerokościach 390, 768 i 1440 px: status 200, brak poziomego przewijania, dokładnie jeden `h1`, brak błędów konsoli; dodatkowo przekierowanie `/en` → `/en/` (308).
 - `hover.spec.ts` — hover na `.card`, `.status-card`, `.hero-module`, `.stage`, `.fnode`, `.relation-node` i `.button` nie zmienia wymiarów elementu ani wysokości jego rodzica (tolerancja 0,5 px). Diagramy React Flow montują się dopiero od 1024 px, więc test czeka na `.react-flow`.
 - `interactions.spec.ts` — zakładki topologii sieci, przełączanie łańcuchów w Object Engine bez skoku wysokości, menu mobilne, przełącznik języka i przełącznik motywu.
 - `diagrams.spec.ts` — geometria węzłów diagramów: moduły hero, węzły React Flow (w obrębie jednej warstwy), etapy roadmapy i węzły Object Engine mają równe wymiary, ich zawartość nie wychodzi poza kafelek, a hover nie zmienia rozmiaru; dodatkowo układ 2 × 2 modułów przy 390 i 430 px.
+- `navigation.spec.ts` — klikanie linków w nawigacji (nie `page.goto`) dla dziewięciu przejść PL i EN, z pozycji 0, 200 i 600 px: każda nowa trasa kończy na `scrollY <= 1` z `h1` poniżej przyklejonego nagłówka. Dodatkowo kotwica „Zobacz model obiektów”, link pomijający nawigację oraz Wstecz/Dalej z natywnym przywracaniem przewijania.
 - `a11y.spec.ts` — skan axe (`@axe-core/playwright`) na `/`, `/en/`, `/network/` i `/documents/`; test nie przechodzi przy naruszeniach o wadze `serious` lub `critical`, pozostałe są wypisywane.
 
 ## Docker

@@ -1,5 +1,6 @@
 import { t, localHref, type Locale } from '@/lib/i18n';
 import Link from '@/components/site-link';
+import { AnchorLink } from '@/components/anchor-link';
 import { SectionHeading, Note } from '@/components/ui';
 import { StatusBadge } from '@/components/status-badge';
 import { HeroSystem } from '@/components/hero-system';
@@ -64,7 +65,7 @@ export default function Home({ locale = 'pl' }: { locale?: Locale } = {}) {
           <SectionHeading id="objects" title="Object Engine" locale={locale} />
           <p>{T('Podstawową jednostką w Core jest obiekt: osoba, dom, pomieszczenie, pojazd, zwierzę, urządzenie, usługa albo organizacja. Obiekt jest punktem odniesienia dla dokumentów, terminów i relacji, więc system wie, czego dotyczy zapisana informacja, a nie tylko gdzie leży plik.')}</p>
           <p className="technical-row"><span className="technical-label">{T('OBIEKT MA')}</span><span className="mono">{T('pola · dokumenty · relacje · tagi · terminy · historię · uprawnienia')}</span></p>
-          <Link className="text-link" href={localHref('/architecture/#object-engine', locale)}>{T('Jak działa model obiektowy')}</Link>
+          <AnchorLink className="text-link" href={localHref('/architecture/#object-engine', locale)}>{T('Jak działa model obiektowy')}</AnchorLink>
         </div>
         <ObjectExplorer chains={objectChains(locale)} label={T('Typ obiektu')} caption={T('dane przykładowe')} />
       </div>
