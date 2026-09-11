@@ -255,7 +255,6 @@
 "Zobacz fundament dokumentowy": "See the document foundation",
 "Wczytywanie…": "Loading…",
 "Wczytywanie strony…": "Loading page…",
-"Architektura HomeIntelCore: Next.js, Core, model obiektów, PostgreSQL, kolejka zadań, DocumentProvider i Paperless-ngx. Home Assistant, monitoring, energia, lokalne AI i WireGuard jako integracje planowane.": "HomeIntelCore architecture: Next.js, Core, the object model, PostgreSQL, the job queue, DocumentProvider and Paperless-ngx. Home Assistant, monitoring, energy, local AI and WireGuard as planned integrations.",
 "Plan sieci domowej HomeIntelCore: router MikroTik RB5009, switch CRS310-8G+2S+IN, link SFP+ do serwera, koncepcja segmentacji logicznej i dostęp zdalny przez WireGuard.": "The HomeIntelCore home network plan: MikroTik RB5009 router, CRS310-8G+2S+IN switch, SFP+ link to the server, the logical segmentation concept and remote access through WireGuard.",
 "Przepływ dokumentów w HomeIntelCore: PDF, OCR w Paperless-ngx, metadane, relacja z obiektem, termin i przypomnienie. Obecny zakres Home Memory na własnym serwerze.": "Document flow in HomeIntelCore: PDF, OCR in Paperless-ngx, metadata, object relation, deadline and reminder. The current Home Memory scope on a self-hosted server.",
 "Sześć etapów HomeIntelCore: Home Memory, Home Control, Home Awareness, Home Intelligence, Home Autonomy i Home Box. Obecny zakres oddzielony od etapów planowanych, bez dat wydania.": "The six HomeIntelCore stages: Home Memory, Home Control, Home Awareness, Home Intelligence, Home Autonomy and Home Box. The current scope separated from planned stages, with no release dates.",
@@ -420,5 +419,6 @@
 "1 zakończenie: rezerwa albo dodatkowy mały switch": "1 ending: a spare or an additional small switch",
 "2 zakończenia: rezerwa albo dodatkowy mały switch": "2 endings: spares or an additional small switch",
 "dodatkowy mały switch zarządzalny dla jednego lub dwóch zakończeń RJ45, zależnie od medium uplinku": "an additional small managed switch for one or two RJ45 endings, depending on the uplink medium",
-"spoza LAN, zdalnie": "outside the LAN, remotely"
+"spoza LAN, zdalnie": "outside the LAN, remotely",
+"Architektura HomeIntelCore: Next.js, Core, model obiektów, PostgreSQL, kolejka zadań, DocumentProvider i Paperless-ngx. Home Assistant, monitoring, energia i lokalne AI jako integracje planowane, WireGuard jako planowana warstwa zdalnego dostępu.": "HomeIntelCore architecture: Next.js, Core, the object model, PostgreSQL, the job queue, DocumentProvider and Paperless-ngx. Home Assistant, monitoring, energy and local AI as planned integrations, WireGuard as the planned remote-access layer."
 }

@@ -46,7 +46,18 @@ test.describe('diagram node geometry', () => {
   test('hero modules share one geometry and keep content inside', async ({ page }) => {
     await ready(page, '/');
     const modules = page.locator('.hero-module');
+    await expect(modules).toHaveCount(4);
+    for (const name of ['Dokumenty', 'Obiekty', 'Sieć', 'Automatyka']) await expect(page.locator('.hero-module', { hasText: name })).toHaveCount(1);
     expectSameSize(await sizes(modules), 'hero modules');
+    for (const name of ['Dokumenty', 'Obiekty', 'Sieć', 'Automatyka']) {
+      const el = page.locator('.hero-module', { hasText: name });
+      const before = await el.boundingBox();
+      await el.hover(); await page.waitForTimeout(300);
+      const after = await el.boundingBox();
+      expect(after?.width, `${name} width changed on hover`).toBeCloseTo(before!.width, 1);
+      expect(after?.height, `${name} height changed on hover`).toBeCloseTo(before!.height, 1);
+      await page.mouse.move(0, 0);
+    }
     for (let i = 0; i < await modules.count(); i++) await expectContained(modules.nth(i), `hero module ${i}`);
     const before = await modules.first().boundingBox();
     await modules.first().hover(); await page.waitForTimeout(300);
@@ -89,15 +100,39 @@ test.describe('diagram node geometry', () => {
 });
 
 test.describe('diagram nodes on narrow screens', () => {
-  for (const width of [390, 430]) {
-    test(`hero modules at ${width}px form a 2×2 grid with equal cards`, async ({ page }) => {
-      await page.setViewportSize({ width, height: 900 });
+  for (const [width, height] of [[390, 844], [430, 932], [768, 1024]] as const) {
+    test(`hero modules at ${width}px form a grid of equal, contained cards`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
       await ready(page, '/');
       const modules = page.locator('.hero-module');
       const boxes = await sizes(modules);
       expectSameSize(boxes, `hero modules @${width}`);
       expect(boxes[0].width).toBeGreaterThan(120);
       for (let i = 0; i < boxes.length; i++) await expectContained(modules.nth(i), `hero module ${i} @${width}`);
+      // Object Engine nodes and roadmap stages must also keep their content inside on narrow screens
+      const relation = page.locator('.relation .tab-panel:not([hidden]) .relation-node');
+      for (let i = 0; i < await relation.count(); i++) await expectContained(relation.nth(i), `relation node ${i} @${width}`);
+      const stages = page.locator('.timeline-track .stage');
+      expectSameSize(await sizes(stages), `roadmap stages @${width}`);
+      for (let i = 0; i < await stages.count(); i++) await expectContained(stages.nth(i), `stage ${i} @${width}`);
+      // nothing scrolls sideways
+      const sw = await page.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth]);
+      expect(sw[0]).toBeLessThanOrEqual(sw[1]);
     });
   }
+
+  test('React Flow nodes at 1024×768 stay contained and equal per tier', async ({ page }) => {
+    await page.setViewportSize({ width: 1024, height: 768 });
+    for (const path of ['/architecture/', '/network/']) {
+      await ready(page, path);
+      await page.locator('.react-flow').first().waitFor({ state: 'visible' });
+      await page.waitForTimeout(600);
+      for (const tier of ['service', 'leaf']) {
+        const boxes = await sizes(page.locator(`.fnode[data-tier="${tier}"]`));
+        for (const b of boxes) expect(Math.abs(b.height - boxes[0].height), `${path} ${tier} heights differ @1024`).toBeLessThanOrEqual(1);
+      }
+      const nodes = page.locator('.fnode');
+      for (let i = 0; i < await nodes.count(); i++) await expectContained(nodes.nth(i), `${path} node ${i} @1024`);
+    }
+  });
 });

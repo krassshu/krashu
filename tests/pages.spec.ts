@@ -13,7 +13,7 @@ const routes = [
   '/en/roadmap/',
 ];
 
-const widths = [390, 430, 768, 1440];
+const widths = [390, 430, 768, 1024, 1440];
 
 /** Collect console errors and uncaught page errors for the lifetime of a page. */
 function watchErrors(page: Page) {
