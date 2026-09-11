@@ -1,8 +1,8 @@
 # HomeIntelCore
 
-Responsywna wizytówka i dokumentacja koncepcji **HomeIntelCore** — prywatnej inteligencji całego domu. Next.js App Router, TypeScript, Server Components i lekki przełącznik PL / EN.
+Dokumentacja projektu **HomeIntelCore**: lokalnego, self-hosted systemu łączącego ludzi, obiekty, dokumenty i terminy w jednym modelu domu. Next.js App Router, TypeScript, Server Components i lekki przełącznik PL / EN.
 
-HomeIntelCore to system local-first i privacy-first, działający przede wszystkim na własnym serwerze. Łączy ludzi, domy, obiekty, dokumenty, urządzenia, energię, monitoring i automatyzację we wspólnym modelu domu, z AI działającym w kontrolowanych granicach: uprawnienia, zgoda użytkownika i pełna historia działań.
+HomeIntelCore to system local-first i privacy-first, działający na własnym serwerze. Obecny zakres (Home Memory) obejmuje model obiektów, dokumenty z OCR, wyszukiwanie oraz terminy. Sterowanie urządzeniami, monitoring, energia i lokalne AI są planowane jako kolejne warstwy tego samego modelu, z uprawnieniami, zgodą użytkownika i historią działań.
 
 > Nazwa **HomeOS** była wcześniejszą, historyczną nazwą roboczą tego projektu. Obecną nazwą jest HomeIntelCore.
 
@@ -65,8 +65,12 @@ Bez konfiguracji adres bazowy wskazuje przygotowany adres podglądu Sites; nie o
 ## Struktura
 
 - `app/` — osobne układy językowe, routing, ikona, robots i sitemap.
-- `components/` — hero, drzewo domu, filary wizji, Object Engine, przepływ dokumentów, diagramy architektury i sieci, poziomy autonomii, Home Box, roadmapa, nawigacja.
-- `lib/` — metadata, adresy, tłumaczenia i obsługa języków.
-- `app/globals.css` — wspólne tokeny, układ responsywny i reduced motion.
+- `components/views/` — pięć widoków stron współdzielonych przez wersje PL i EN.
+- `components/` — `SiteHeader`, `SiteFooter`, `StatusBadge`, `ArchitectureDiagram`, `NetworkTopology`, `ObjectRelationship`, `DocumentFlow`, `RoadmapTimeline`, `TechTable` oraz elementy z `ui.tsx` (`PageIntro`, `SectionHeading`, `MetaList`, `Note`, `TextLink`).
+- `lib/content.ts` — jedno źródło faktów: stos technologiczny ze statusami, etapy roadmapy, segmenty sieci, plan zakończeń okablowania.
+- `lib/` — metadata, adresy, słownik tłumaczeń (`en.json`, klucz = tekst polski) i obsługa języków.
+- `app/globals.css` — tokeny (kolory, typografia, odstępy, promienie), style komponentów, breakpointy i reduced motion.
+
+Statusy w całej witrynie pochodzą z jednego słownika (`W rozwoju`, `W laboratorium`, `Planowane`, `Dalsza perspektywa`, `Koncepcja`). Diagramy są zbudowane w HTML/CSS i na wąskich ekranach przechodzą w układ pionowy. Fonty Instrument Sans i IBM Plex Mono są ładowane przez `next/font/google` i self-hostowane podczas buildu.
 
 Strona prezentuje koncepcję HomeIntelCore; nie implementuje jego backendu ani importowania dokumentów.

@@ -1,47 +1,63 @@
-import { t, localHref, type Locale } from '@/lib/i18n';
+import { t, type Locale } from '@/lib/i18n';
 import { PageIntro, SectionHeading, BreadcrumbData, Note, TextLink } from '@/components/ui';
-import { NetworkDiagram } from '@/components/network-diagram';
-import { Segments } from '@/components/segments';
-export default function Network({ locale = "pl" }: {
-    locale?: Locale;
-} = {}) {
-    return <>
-        <BreadcrumbData label={t("Sieć domowa", locale)} path="/network/" locale={locale}/>
-        <PageIntro number="02" label={t("Sieć domowa", locale)} title={t("Infrastruktura pod własny system.", locale)} description={t("Fizyczne połączenia odpowiadają na pytanie: co i gdzie podłączamy? Segmentacja logiczna opisuje role urządzeń. To dwa osobne widoki tej samej sieci — na razie w formie planu.", locale)} locale={locale}/>
-        <section className="container section">
-            <SectionHeading number="01" label={t("TOPOLOGIA FIZYCZNA", locale)} title={t("RB5009 i CRS310 jako punkt dystrybucji.", locale)} locale={locale}>{t("Router MikroTik RB5009 łączy się przez patch panel z głównym switchem CRS310-8G+2S+IN. Switch udostępnia osiem portów 2.5G RJ45 oraz dwa porty SFP+, z których jeden prowadzi do serwera HomeIntelCore / NAS.", locale)}</SectionHeading>
-            <NetworkDiagram locale={locale}/>
-            <Note locale={locale}>{t("To plan okablowania, a nie potwierdzenie wykonanej instalacji. Punkty dostępowe na dole i na górze są planowane. Żadna usługa nie jest wystawiona publicznie.", locale)}</Note>
-        </section>
-        <section className="container section">
-            <SectionHeading number="02" label={t("PLAN PORTÓW", locale)} title={t("Każde połączenie ma przeznaczenie.", locale)} locale={locale}/>
-            <div className="table-wrap"><table>
-                <caption>{t("Planowane zakończenia okablowania w pomieszczeniach", locale)}</caption>
-                <thead><tr><th scope="col">{t("Pomieszczenie", locale)}</th><th scope="col">{t("Połączenie", locale)}</th><th scope="col">{t("Przeznaczenie", locale)}</th></tr></thead>
-                <tbody>
-                    <tr><th scope="row">{t("Sypialnia", locale)}</th><td>{t("1 × RJ45", locale)}</td><td>{t("Punkt sieciowy", locale)}</td></tr>
-                    <tr><th scope="row">{t("Pokój 2", locale)}</th><td>{t("1 × RJ45", locale)}</td><td>{t("Punkt sieciowy", locale)}</td></tr>
-                    <tr><th scope="row">{t("Pokój 1", locale)}</th><td>{t("1 × RJ45", locale)}</td><td>{t("Komputer", locale)}</td></tr>
-                    <tr className="highlight-row"><th scope="row">{t("Pokój 1", locale)}</th><td>{t("1 × SFP+", locale)}</td><td>{t("Serwer HomeIntelCore / NAS — szybki link", locale)}</td></tr>
-                    <tr><th scope="row">{t("Pokój 1", locale)}</th><td>{t("1 × RJ45", locale)}</td><td>{t("Rezerwa lub mały switch zarządzalny", locale)}</td></tr>
-                    <tr><th scope="row">{t("Salon", locale)}</th><td>{t("3 × RJ45", locale)}</td><td>{t("TV, konsola, rezerwa", locale)}</td></tr>
-                    <tr><th scope="row">{t("AP dół", locale)}</th><td>{t("1 × RJ45", locale)}</td><td>{t("Planowany punkt dostępowy", locale)}</td></tr>
-                    <tr><th scope="row">{t("AP góra", locale)}</th><td>{t("1 × RJ45", locale)}</td><td>{t("Planowany punkt dostępowy", locale)}</td></tr>
-                </tbody>
-            </table></div>
-            <p className="body-copy spaced">{t("Łącznie plan przewiduje dziewięć zakończeń RJ45 oraz jeden link SFP+ do serwera. CRS310-8G+2S+IN ma osiem portów RJ45, więc jedno zakończenie musi pozostać rezerwą albo zostać obsłużone przez dodatkowy mały switch zarządzalny. Sposób podłączenia routera do switcha wymaga osobnego przypisania portu. Numery portów, moduły SFP+ i medium dla uplinku nie zostały jeszcze określone.", locale)}</p>
-        </section>
-        <section className="container section" id="segmentation">
-            <SectionHeading number="03" label={t("SEGMENTACJA LOGICZNA", locale)} title={t("Role urządzeń, niezależnie od kabli.", locale)} locale={locale}>{t("Poniższe segmenty porządkują koncepcję sieci. Nie oznaczają gotowej konfiguracji VLAN ani wdrożonej polityki dostępu.", locale)}</SectionHeading>
-            <Segments locale={locale}/>
-            <Note locale={locale}>{t("Identyfikatory VLAN, podsieci, przypisania portów i reguły firewalla nie zostały jeszcze ostatecznie określone. Sam podział na segmenty nie definiuje dozwolonego ruchu między nimi.", locale)}</Note>
-        </section>
-        <section className="container section">
-            <div className="editorial-columns two">
-                <article><h2>{t("Serwer blisko danych", locale)}</h2><p>{t("HomeIntelCore jest projektowany do pracy w LAN. Link CRS310 → SFP+ → serwer wyróżnia ścieżkę do usług i lokalnych danych, bez deklarowania niezmierzonej przepustowości.", locale)}</p></article>
-                <article><h2>{t("Dostęp poza domem", locale)}</h2><p>{t("Zdalny dostęp jest osobną, kontrolowaną warstwą VPN, opartą docelowo o WireGuard. Usługi domowe nie są i nie mają być wystawiane publicznie. Konkretna konfiguracja i zasady bezpieczeństwa pozostają elementem wdrożenia.", locale)}</p></article>
-            </div>
-            <TextLink href={localHref("/architecture/", locale)} locale={locale}>{t("Poznaj usługi na serwerze HomeIntelCore", locale)}</TextLink>
-        </section>
-    </>;
+import { NetworkTopology } from '@/components/network-topology';
+import { StatusBadge } from '@/components/status-badge';
+import { segments, branches } from '@/lib/content';
+
+export default function Network({ locale = 'pl' }: { locale?: Locale } = {}) {
+  return <>
+    <BreadcrumbData label="Sieć domowa" path="/network/" locale={locale} />
+    <PageIntro label="Sieć domowa" title="Sieć domowa" locale={locale}
+      description="Sieć jest planowana pod pracę HomeIntelCore w LAN: serwer ma dostać własny szybki link, a urządzenia domowe mają być rozdzielone według roli. Poniżej znajduje się plan topologii fizycznej i koncepcja segmentacji logicznej. Okablowanie nie zostało jeszcze wykonane, a VLAN-y i reguły firewalla nie są ustalone."
+      meta={<dl className="meta-list"><div><dt>Router</dt><dd className="mono">MikroTik RB5009</dd></div><div><dt>Switch</dt><dd className="mono">CRS310-8G+2S+IN</dd></div><div><dt>{t('Link serwera', locale)}</dt><dd className="mono">SFP+</dd></div><div><dt>{t('Stan', locale)}</dt><dd><StatusBadge status="planned" locale={locale} label="Plan" /></dd></div></dl>} />
+
+    <section className="section container" aria-labelledby="topology">
+      <SectionHeading id="topology" title="Topologia fizyczna" locale={locale}>{t('Router MikroTik RB5009 łączy się przez patch panel z głównym switchem CRS310-8G+2S+IN. Switch ma osiem portów 2.5G RJ45 i dwa porty SFP+, z których jeden prowadzi do serwera HomeIntelCore / NAS.', locale)}</SectionHeading>
+      <NetworkTopology locale={locale} />
+    </section>
+
+    <section className="section section-row container" aria-labelledby="segmentation">
+      <div className="split split-4-8">
+        <div>
+          <SectionHeading id="segmentation" title="Segmentacja logiczna" locale={locale} />
+          <p>{t('Segmenty porządkują role urządzeń niezależnie od kabli. Nie oznaczają gotowej konfiguracji VLAN ani wdrożonej polityki dostępu, a sam podział nie definiuje dozwolonego ruchu między segmentami.', locale)}</p>
+        </div>
+        <div className="table-wrap"><table className="segment-table">
+          <caption>{t('Koncepcja segmentów sieci', locale)}</caption>
+          <thead><tr><th scope="col">{t('Segment', locale)}</th><th scope="col">{t('Rola', locale)}</th><th scope="col">{t('Status', locale)}</th></tr></thead>
+          <tbody>{segments.map(s => <tr key={s.name}><th scope="row"><span className="mono">{s.name}</span></th><td data-label={t('Rola', locale)}>{t(s.role, locale)}</td><td data-label={t('Status', locale)}><StatusBadge status="concept" locale={locale} /></td></tr>)}</tbody>
+        </table></div>
+      </div>
+      <Note locale={locale}>{t('Identyfikatory VLAN, podsieci, przypisania portów i reguły firewalla nie zostały jeszcze określone.', locale)}</Note>
+    </section>
+
+    <section className="section section-row container" aria-labelledby="cabling">
+      <div className="split split-4-8">
+        <div>
+          <SectionHeading id="cabling" title="Plan okablowania" locale={locale} />
+          <p>{t('Plan przewiduje dziewięć zakończeń RJ45 oraz jeden link SFP+ do serwera. CRS310-8G+2S+IN ma osiem portów RJ45, więc jedno zakończenie musi pozostać rezerwą albo zostać obsłużone przez dodatkowy mały switch zarządzalny. Sposób podłączenia routera do switcha wymaga osobnego przypisania portu. Numery portów, moduły SFP+ i medium dla uplinku nie zostały jeszcze określone.', locale)}</p>
+        </div>
+        <div className="table-wrap"><table className="cabling-table">
+          <caption>{t('Planowane zakończenia okablowania', locale)}</caption>
+          <thead><tr><th scope="col">{t('Połączenie', locale)}</th><th scope="col">{t('Przeznaczenie', locale)}</th><th scope="col">{t('Pomieszczenie', locale)}</th></tr></thead>
+          <tbody>{branches.map((b, i) => <tr key={i} className={b.fast ? 'row-fast' : undefined}>
+            <th scope="row"><span className="mono">{b.count ?? 1} × {b.port}</span></th>
+            <td data-label={t('Przeznaczenie', locale)}>{t(b.target, locale)}</td>
+            <td data-label={t('Pomieszczenie', locale)}>{t(b.room, locale)}</td>
+          </tr>)}</tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section className="section section-row container" aria-labelledby="remote">
+      <div className="split split-4-8">
+        <SectionHeading id="remote" title="Serwer i dostęp zdalny" locale={locale} />
+        <div className="prose">
+          <p>{t('HomeIntelCore jest projektowany do pracy w LAN. Link CRS310 → SFP+ → serwer wyróżnia ścieżkę do usług i lokalnych danych, bez deklarowania niezmierzonej przepustowości.', locale)}</p>
+          <p>{t('Zdalny dostęp ma być osobną, kontrolowaną warstwą VPN opartą docelowo o WireGuard. Usługi domowe nie są i nie mają być wystawiane publicznie. Konkretna konfiguracja i zasady bezpieczeństwa pozostają elementem wdrożenia.', locale)}</p>
+          <TextLink href="/architecture/" locale={locale}>{t('Zobacz usługi na serwerze HomeIntelCore', locale)}</TextLink>
+        </div>
+      </div>
+    </section>
+  </>;
 }

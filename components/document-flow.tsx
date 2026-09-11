@@ -1,5 +1,24 @@
 import { t, type Locale } from '@/lib/i18n';
-import { Icon } from './icons';
-export function DocumentFlow({ locale = "pl" }: {
-    locale?: Locale;
-} = {}) { return <figure className="document-flow"><div className="flow-steps"><div className="flow-step"><span className="step-number">{t("01 / PLIK", locale)}</span><div className="file-symbol"><Icon name="file" size={37}/><span className="mono">{t("PDF", locale)}</span></div><strong className="mono">{t("scan_0032.pdf", locale)}</strong><p>{t("Skan bez powi\u0105za\u0144.", locale)}<br />{t("Informacja zamkni\u0119ta w pliku.", locale)}</p></div><span className="flow-arrow" aria-hidden="true">{t("\u2192", locale)}</span><div className="flow-step enriched"><span className="step-number">{t("02 / KONTEKST", locale)}</span><div className="flow-heading"><Icon name="file" size={21}/><strong>{t("Polisa OC", locale)}</strong></div><dl><div><dt>{t("Obiekt", locale)}</dt><dd>{t("Toyota Corolla", locale)}</dd></div><div><dt>{t("W\u0142a\u015Bciciel", locale)}</dt><dd>{t("Oskar", locale)}</dd></div><div><dt>{t("Wa\u017Cna do", locale)}</dt><dd>{t("12.04.2027", locale)}</dd></div><div><dt>{t("Typ", locale)}</dt><dd>{t("Ubezpieczenie", locale)}</dd></div></dl></div><span className="flow-arrow" aria-hidden="true">{t("\u2192", locale)}</span><div className="flow-step"><span className="step-number">{t("03 / TERMIN", locale)}</span><Icon name="calendar" size={33}/><strong>{t("W odpowiednim momencie.", locale)}</strong><p>{t("Przypomnienie 30 dni", locale)}<br />{t("przed ko\u0144cem polisy.", locale)}</p><span className="tag">{t("13.03.2027", locale)}</span></div></div><figcaption>{t("Przyk\u0142adowy przep\u0142yw w obecnym zakresie Home Memory. OCR odczytuje tekst; powi\u0105zanie z obiektem i termin wymagaj\u0105 poprawnych metadanych.", locale)}</figcaption></figure>; }
+
+const steps: [string, string, string, boolean][] = [
+  ['01', 'PDF', 'scan_0032.pdf', true],
+  ['02', 'OCR / Paperless-ngx', 'tekst do wyszukiwania', false],
+  ['03', 'Metadane dokumentu', 'Polisa OC', false],
+  ['04', 'Relacja z obiektem', 'Toyota Corolla', false],
+  ['05', 'Termin', '12.04.2027', false],
+  ['06', 'Przypomnienie', '30 dni wcześniej', false],
+];
+
+/** The document path in the current Home Memory scope, shown before it is explained. */
+export function DocumentFlow({ locale = 'pl' }: { locale?: Locale }) {
+  return <figure className="doc-flow" aria-label={t('Przepływ dokumentu od pliku PDF do przypomnienia', locale)}>
+    <div className="diagram-head"><span>{t('PRZEPŁYW DOKUMENTU', locale)}</span><span>{t('zakres Home Memory', locale)}</span></div>
+    <ol className="doc-steps">
+      {steps.map(([n, label, value, mono]) => <li key={n}>
+        <span className="technical-label">{n} {t(label, locale)}</span>
+        <strong className={mono ? 'mono' : undefined}>{t(value, locale)}</strong>
+      </li>)}
+    </ol>
+    <figcaption>{t('Oskar, Toyota Corolla i daty polisy to dane przykładowe. OCR odczytuje tekst; powiązanie z obiektem i termin wymagają poprawnych metadanych. Ta strona nie zawiera działającego importera.', locale)}</figcaption>
+  </figure>;
+}

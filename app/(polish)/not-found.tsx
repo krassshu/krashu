@@ -1,2 +1,9 @@
 import Link from 'next/link';
-export default function NotFound(){return <section className="container page-intro"><div className="eyebrow">404 / BRAK STRONY</div><h1>Tego adresu nie ma w modelu.</h1><p>Wróć do strony głównej lub wybierz temat w nawigacji.</p><Link href="/" className="button primary" style={{marginTop:25}}>Wróć do HomeIntelCore →</Link></section>}
+export default function NotFound() {
+  return <section className="container page-intro">
+    <p className="technical-label">404</p>
+    <h1>Nie znaleziono strony</h1>
+    <p className="lead">Tego adresu nie ma w dokumentacji projektu. Wróć do strony głównej albo wybierz temat w nawigacji.</p>
+    <p><Link href="/" className="button button-primary">Wróć do strony głównej</Link></p>
+  </section>;
+}

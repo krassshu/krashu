@@ -1,7 +1,7 @@
 {
   "name": "homeintelcore",
   "version": "1.0.0",
-  "description": "HomeIntelCore — prywatna inteligencja całego domu",
+  "description": "HomeIntelCore: dokumentacja lokalnego systemu dla całego domu",
   "main": "index.js",
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",

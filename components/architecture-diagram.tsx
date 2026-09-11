@@ -1,40 +1,54 @@
 import { t, type Locale } from '@/lib/i18n';
-import { Icon } from './icons';
-export function ArchitectureDiagram({ locale = "pl" }: {
-    locale?: Locale;
-} = {}) {
-    return <figure className="architecture-diagram">
-        <div className="panel-toolbar"><span>{t("HOMEINTELCORE / ARCHITEKTURA LOGICZNA", locale)}</span><span>{t("Zakres Core", locale)}</span></div>
-        <div className="architecture-content">
-            <div className="architecture-entry">
-                <span><Icon name="person" size={17}/>{t(" Użytkownik", locale)}</span>
-                <i aria-hidden="true">↓</i>
-                <span><strong>{t("Interfejs użytkownika", locale)}</strong><small>{t("Next.js — jedna aplikacja do domu", locale)}</small></span>
-                <i aria-hidden="true">↓</i>
-                <span className="core-node"><strong>{t("Core", locale)}</strong><small>{t("Obiekty · relacje · uprawnienia · terminy", locale)}</small></span>
-            </div>
-            <div className="architecture-branches">
-                <div className="arch-branch"><strong>{t("PostgreSQL Core", locale)}</strong><span>{t("Model obiektów i relacji", locale)}</span></div>
-                <div className="arch-branch"><strong>{t("Kolejka zadań", locale)}</strong><span>{t("Praca w tle: import, OCR, przypomnienia", locale)}</span></div>
-                <div className="arch-branch provider">
-                    <strong>{t("DocumentProvider", locale)}</strong><span>{t("Granica integracji dokumentów", locale)}</span>
-                    <i aria-hidden="true">↓</i>
-                    <div className="paperless-node"><strong>{t("Paperless-ngx", locale)}</strong><span>{t("Dokumenty / OCR", locale)}</span></div>
-                    <div className="paperless-deps"><span>{t("PostgreSQL", locale)}<small>{t("Dane Paperless", locale)}</small></span><span>{t("Gotenberg", locale)}<small>{t("Konwersja plików", locale)}</small></span></div>
-                </div>
-            </div>
-            <div className="planned-layers">
-                <div className="planned-layers-label"><span className="tag planned">{t("planowane warstwy", locale)}</span><span>{t("Nie wdrożone. Dołączają do tego samego modelu domu.", locale)}</span></div>
-                <div className="planned-grid">
-                    <span><Icon name="plug" size={16}/><strong>{t("Home Assistant", locale)}</strong><small>{t("Urządzenia, sceny, rutyny", locale)}</small></span>
-                    <span><Icon name="network" size={16}/><strong>{t("Monitoring / NVR", locale)}</strong><small>{t("Kamery i lokalna rejestracja obrazu", locale)}</small></span>
-                    <span><Icon name="clock" size={16}/><strong>{t("Energia", locale)}</strong><small>{t("Falownik, licznik, magazyn energii", locale)}</small></span>
-                    <span><Icon name="search" size={16}/><strong>{t("Lokalne AI", locale)}</strong><small>{t("Wyszukiwanie semantyczne i kontekst", locale)}</small></span>
-                    <span><Icon name="shield" size={16}/><strong>{t("WireGuard", locale)}</strong><small>{t("Kontrolowany dostęp zdalny", locale)}</small></span>
-                </div>
-            </div>
-            <div className="compose-label"><span className="status-dot"/>{t(" Docker Compose ", locale)}<span>{t("/ uruchomienie usług na własnym serwerze", locale)}</span></div>
+import { StatusBadge } from './status-badge';
+
+function Node({ name, role, kind, locale }: { name: string; role?: string; kind?: 'core' | 'planned' | 'plain'; locale: Locale }) {
+  return <div className={`node${kind === 'core' ? ' node-core' : ''}${kind === 'planned' ? ' node-planned' : ''}`}>
+    <strong>{name}</strong>{role ? <span>{t(role, locale)}</span> : null}
+  </div>;
+}
+
+const planned: [string, string][] = [
+  ['Home Assistant', 'urządzenia, sceny, rutyny'],
+  ['Monitoring / NVR', 'kamery, lokalna rejestracja'],
+  ['Energia', 'falownik, licznik, magazyn'],
+  ['Lokalne AI', 'wyszukiwanie semantyczne'],
+  ['WireGuard', 'dostęp zdalny'],
+];
+
+/**
+ * Service dependencies as an HTML/CSS diagram. `compact` is the homepage teaser;
+ * the full version adds Caddy, the Docker Compose boundary and node roles.
+ */
+export function ArchitectureDiagram({ compact = false, locale = 'pl' }: { compact?: boolean; locale?: Locale }) {
+  const title = t(compact ? 'Uproszczony schemat zależności HomeIntelCore' : 'Zależności usług HomeIntelCore w obecnym laboratorium', locale);
+  return <figure className={`arch${compact ? ' arch-compact' : ''}`} aria-label={title}>
+    <div className="diagram-head"><span>{t('ARCHITEKTURA LOGICZNA', locale)}</span><span>{t(compact ? 'skrót' : 'Docker Compose, własny serwer', locale)}</span></div>
+    <div className="arch-body">
+      <ol className="arch-chain">
+        <li><Node name={t('Użytkownik', locale)} locale={locale} /></li>
+        {compact ? null : <li><Node name="Caddy" role="reverse proxy w LAN" locale={locale} /></li>}
+        <li><Node name="Next.js" role={compact ? undefined : 'interfejs użytkownika'} locale={locale} /></li>
+        <li><Node name="Core" role={compact ? 'obiekty, relacje, terminy' : 'model obiektów, relacje, uprawnienia, terminy'} kind="core" locale={locale} /></li>
+      </ol>
+      <div className="arch-branches" role="list">
+        <div className="arch-branch" role="listitem"><Node name="PostgreSQL" role={compact ? 'dane Core' : 'baza Core: obiekty i relacje'} locale={locale} /></div>
+        <div className="arch-branch" role="listitem"><Node name={t('Kolejka zadań', locale)} role={compact ? 'praca w tle' : 'import, OCR, przypomnienia'} locale={locale} /></div>
+        <div className="arch-branch" role="listitem">
+          <Node name="DocumentProvider" role={compact ? 'granica integracji' : 'granica integracji dokumentów'} locale={locale} />
+          <ol className="arch-chain arch-sub">
+            <li><Node name="Paperless-ngx" role={compact ? 'dokumenty, OCR' : 'dokumenty, OCR, wyszukiwanie pełnotekstowe'} locale={locale} /></li>
+          </ol>
+          <div className="arch-leaves">
+            <Node name="PostgreSQL" role="baza Paperless" locale={locale} />
+            <Node name="Gotenberg" role="konwersja plików" locale={locale} />
+          </div>
         </div>
-        <figcaption>{t("Użytkownik korzysta z interfejsu Next.js, a interfejs z Core. Core przechowuje model obiektów i relacji w PostgreSQL, zleca pracę w tle kolejce zadań i sięga po dokumenty przez DocumentProvider, który łączy go z Paperless-ngx, jego bazą PostgreSQL i usługą Gotenberg. Home Assistant, monitoring, energia, lokalne AI i WireGuard to warstwy planowane, jeszcze niewdrożone.", locale)}</figcaption>
-    </figure>;
+      </div>
+      <div className="arch-planned">
+        <div className="arch-planned-head"><StatusBadge status="planned" locale={locale} /><span>{t('Integracje mają dołączyć do Core i korzystać z tego samego modelu domu.', locale)}</span></div>
+        <ul>{planned.map(([name, role]) => <li key={name}><Node name={t(name, locale)} role={compact ? undefined : role} kind="planned" locale={locale} /></li>)}</ul>
+      </div>
+    </div>
+    <figcaption>{t('Użytkownik korzysta z interfejsu Next.js, a interfejs z Core. Core przechowuje model obiektów w PostgreSQL, zleca pracę w tle kolejce zadań i sięga po dokumenty przez DocumentProvider, który łączy go z Paperless-ngx wraz z jego bazą PostgreSQL i usługą Gotenberg. Home Assistant, monitoring, energia, lokalne AI i WireGuard są planowane i nie zostały wdrożone.', locale)}</figcaption>
+  </figure>;
 }
