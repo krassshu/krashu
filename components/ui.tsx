@@ -8,9 +8,6 @@ export function TextLink({ href, children, locale = 'pl' }: { href: string; chil
   return <Link className="text-link" href={localHref(href, locale)}>{t(children, locale)}<Arrow /></Link>;
 }
 
-export function TechnicalLabel({ children, locale = 'pl' }: { children: ReactNode; locale?: Locale }) {
-  return <span className="technical-label">{t(children, locale)}</span>;
-}
 
 /** Section title with an optional lead paragraph and a link on the opposite side. */
 export function SectionHeading({ id, title, children, link, locale = 'pl' }: { id?: string; title: string; children?: ReactNode; link?: { href: string; label: string }; locale?: Locale }) {
@@ -51,7 +48,3 @@ export function Note({ children, locale = 'pl' }: { children: ReactNode; locale?
   return <p className="note">{t(children, locale)}</p>;
 }
 
-/** Key–value metadata rendered in a definition list. */
-export function MetaList({ items, locale = 'pl' }: { items: [string, ReactNode][]; locale?: Locale }) {
-  return <dl className="meta-list">{items.map(([key, value]) => <div key={key}><dt>{t(key, locale)}</dt><dd>{typeof value === 'string' ? t(value, locale) : value}</dd></div>)}</dl>;
-}

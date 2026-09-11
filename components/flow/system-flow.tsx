@@ -17,7 +17,7 @@ const edgeTypes = { system: FlowEdge };
 function layout(graph: GraphDef, labels: FlowLabels): { nodes: Node[]; edges: Edge[] } {
   const g = new dagre.graphlib.Graph();
   g.setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: graph.direction, nodesep: graph.direction === 'LR' ? 18 : 24, ranksep: graph.direction === 'LR' ? 72 : 44, marginx: 8, marginy: 8 });
+  g.setGraph({ rankdir: graph.direction, nodesep: graph.direction === 'LR' ? 16 : 20, ranksep: graph.direction === 'LR' ? 56 : 40, marginx: 8, marginy: 8 });
   graph.nodes.forEach(n => g.setNode(n.id, { width: n.width, height: n.height }));
   graph.edges.forEach(e => g.setEdge(e.source, e.target, { minlen: e.minlen ?? 1 }));
   dagre.layout(g);

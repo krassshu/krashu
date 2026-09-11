@@ -13,8 +13,8 @@ function PhysicalTree({ compact, locale }: { compact: boolean; locale: Locale })
     <ol className="topo-chain">
       <li><div className="node"><strong>{t('Internet', locale)}</strong></div></li>
       <li><div className="node"><strong>MikroTik RB5009</strong><span>{t('router', locale)}</span></div></li>
-      {compact ? null : <li><div className="node"><strong>{t('Patch panel', locale)}</strong></div></li>}
-      <li><div className="node node-core"><strong>MikroTik CRS310</strong><span className="mono">8 × 2.5G RJ45 · 2 × SFP+</span></div></li>
+      {compact ? null : <li><div className="node node-passive"><strong>{t('Patch panel', locale)}</strong><span>{t('pasywne okablowanie', locale)} · <span className="mono">PASSIVE</span></span></div></li>}
+      <li><div className="node node-core"><strong>MikroTik CRS310</strong><span className="mono">CRS310-8G+2S+IN</span><span>8 × 2.5G RJ45 · 2 × SFP+</span></div></li>
     </ol>
     <ul className="topo-branches">{rows.map((row, i) => <li key={i} className={row.fast ? 'topo-fast' : undefined}>
       <span className="port mono">{row.port}</span><span className="topo-target">{row.target}</span>

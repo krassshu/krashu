@@ -19,9 +19,10 @@ export function FlowNode({ id, data, targetPosition = Position.Top, sourcePositi
     <span className="fnode-icon" aria-hidden="true"><NodeIcon kind={data.kind} /></span>
     <span className="fnode-text">
       <span className="fnode-label">{data.label}</span>
-      {data.tech || data.role ? <span className="fnode-role">{data.tech ? <span className="mono">{data.tech}</span> : null}{data.tech && data.role ? ' · ' : ''}{data.role}</span> : null}
+      {data.tech ? <span className="fnode-tech mono">{data.tech}</span> : null}
+      {data.role ? <span className="fnode-role">{data.role}</span> : null}
     </span>
-    {data.status ? <span className={`fnode-status status-${data.status}`} title={data.statusLabel}><span className="status-dot" aria-hidden="true" /><span className="visually-hidden">{data.statusLabel}</span></span> : null}
+    {data.tag ? <span className="fnode-tag mono">{data.tag}</span> : data.status ? <span className={`fnode-status status-${data.status}`} title={data.statusLabel}><span className="status-dot" aria-hidden="true" /><span className="visually-hidden">{data.statusLabel}</span></span> : null}
     {data.details ? <Popover.Root>
       <Popover.Trigger className="fnode-more nodrag nopan" aria-label={`${data.detailsLabel}: ${data.label}`}>
         <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="none" stroke="currentColor" /><path d="M6 5.2v3.3M6 3.4v.2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg>

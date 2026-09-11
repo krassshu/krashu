@@ -31,6 +31,9 @@ export function HeroSystem({ core, modules, caption }: { core: { label: string; 
         </button>
       </li>)}
     </ul>
-    <p className="hero-system-note" id="hero-module-note" aria-live="polite">{current ? current.note : caption}</p>
+    <div className="hero-system-note" id="hero-module-note" aria-live="polite">
+      <p className={current ? 'is-hidden' : undefined} aria-hidden={current ? true : undefined}>{caption}</p>
+      {modules.map(m => <p key={m.id} className={active === m.id ? undefined : 'is-hidden'} aria-hidden={active === m.id ? undefined : true}>{m.note}</p>)}
+    </div>
   </div>;
 }

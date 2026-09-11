@@ -8,6 +8,8 @@ export type FlowNodeData = {
   tech?: string;
   role?: string;
   status?: Status;
+  /** Short uppercase marker shown instead of a status, e.g. PASSIVE for a patch panel. */
+  tag?: string;
   kind: NodeKind;
   details?: [string, string][];
 };
@@ -15,18 +17,20 @@ export type GraphNode = { id: string; data: FlowNodeData; width: number; height:
 export type GraphEdge = { id: string; source: string; target: string; label?: string; kind?: 'default' | 'planned' | 'fast'; minlen?: number };
 export type GraphDef = { nodes: GraphNode[]; edges: GraphEdge[]; direction: 'TB' | 'LR' };
 
-const size = (kind: NodeKind): [number, number] => {
+/** Width by role in the diagram, height by how many text lines the node carries (label, model, metadata). */
+const width = (kind: NodeKind): number => {
   switch (kind) {
-    case 'core': return [244, 78];
-    case 'user': case 'internet': return [168, 54];
-    case 'planned': return [214, 62];
-    case 'segment': return [220, 70];
-    case 'switch': case 'router': return [244, 78];
-    case 'server': case 'client': case 'ap': return [244, 74];
-    default: return [224, 70];
+    case 'core': case 'switch': case 'router': return 248;
+    case 'user': case 'internet': return 176;
+    case 'planned': return 214;
+    case 'segment': return 220;
+    case 'panel': return 232;
+    case 'server': case 'client': case 'ap': return 262;
+    default: return 224;
   }
 };
-const n = (id: string, data: FlowNodeData): GraphNode => { const [width, height] = size(data.kind); return { id, data, width, height }; };
+const height = (data: FlowNodeData): number => 40 + (data.tech ? 17 : 0) + (data.role ? (data.role.length > 26 ? 31 : 17) : 0) + (['server', 'client', 'ap'].includes(data.kind) ? 14 : 0);
+const n = (id: string, data: FlowNodeData): GraphNode => ({ id, data, width: width(data.kind), height: height(data) });
 const e = (source: string, target: string, label?: string, kind: GraphEdge['kind'] = 'default', minlen?: number): GraphEdge => ({ id: `${source}-${target}`, source, target, label, kind, minlen });
 
 const planned: GraphNode[] = [
@@ -69,8 +73,8 @@ export function networkPhysicalGraph(compact: boolean): GraphDef {
   const nodes: GraphNode[] = [
     n('internet', { label: 'Internet', kind: 'internet' }),
     n('rb5009', { label: 'MikroTik RB5009', tech: 'RB5009', role: 'router', status: 'planned', kind: 'router', details: [['Rola', 'router, brama'], ['Uplink do switcha', 'port nieprzypisany'], ['Status', 'plan homelabu']] }),
-    ...(compact ? [] : [n('patch', { label: 'Patch panel', role: 'zakończenia okablowania', status: 'planned', kind: 'panel' })]),
-    n('crs310', { label: 'MikroTik CRS310', tech: 'CRS310-8G+2S+IN', role: 'główny switch', status: 'planned', kind: 'switch', details: crsDetails }),
+    ...(compact ? [] : [n('patch', { label: 'Patch panel', role: 'okablowanie', tag: 'PASSIVE', kind: 'panel' })]),
+    n('crs310', { label: 'MikroTik CRS310', tech: 'CRS310-8G+2S+IN', role: '8 × 2.5G RJ45 · 2 × SFP+', status: 'planned', kind: 'switch', details: crsDetails }),
   ];
   const edges: GraphEdge[] = compact
     ? [e('internet', 'rb5009'), e('rb5009', 'crs310')]

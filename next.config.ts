@@ -1,3 +1,5 @@
 import type { NextConfig } from 'next';
-const config: NextConfig = { output: process.env.SITE_OUTPUT === 'export' ? 'export' : 'standalone', trailingSlash: true, poweredByHeader: false, experimental: { globalNotFound: true } };
+/** SITE_OUTPUT: unset → standalone (Docker), "export" → static export to out/, "server" → plain `next start` (used by the Playwright web server). */
+const output = process.env.SITE_OUTPUT === 'export' ? 'export' : process.env.SITE_OUTPUT === 'server' ? undefined : 'standalone';
+const config: NextConfig = { output, trailingSlash: true, poweredByHeader: false, experimental: { globalNotFound: true } };
 export default config;
