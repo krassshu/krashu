@@ -1,18 +1,32 @@
-import { t, type Locale } from '@/lib/i18n';
-import { milestones } from '@/lib/content';
-import { StatusBadge } from './status-badge';
+'use client';
+import { useState } from 'react';
+import { Tabs } from '@base-ui/react/tabs';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 
-/** Development stages on one axis. The current stage is emphasised; Home Box is visually further away. */
-export function RoadmapTimeline({ compact = false, locale = 'pl' }: { compact?: boolean; locale?: Locale }) {
-  return <ol className={`timeline${compact ? ' timeline-compact' : ''}`} aria-label={t('Etapy rozwoju projektu', locale)}>
-    {milestones.map(m => <li key={m.stage} className={`stage stage-${m.status}`} aria-current={m.status === 'active' ? 'step' : undefined}>
-      <span className="stage-marker" aria-hidden="true" />
-      <span className="stage-number mono">{m.stage}</span>
-      <div className="stage-body">
-        <div className="stage-head"><h3>{m.name}</h3><StatusBadge status={m.status} locale={locale} /></div>
-        <p className="stage-features">{m.features.map(f => t(f, locale)).join(' · ')}</p>
-        {compact ? null : <p className="stage-description">{t(m.description, locale)}</p>}
-      </div>
-    </li>)}
-  </ol>;
+export type Stage = { stage: string; name: string; status: 'active' | 'planned' | 'future'; statusLabel: string; features: string[]; description: string };
+
+/** Stages on one axis. Only the chosen stage shows its description; the current one is emphasised. */
+export function RoadmapTimeline({ stages, label, modulesLabel, compact = false }: { stages: Stage[]; label: string; modulesLabel: string; compact?: boolean }) {
+  const [value, setValue] = useState(stages[0].stage);
+  const reduce = useReducedMotion();
+  const current = stages.find(s => s.stage === value) ?? stages[0];
+  return <Tabs.Root value={value} onValueChange={v => setValue(String(v))} className={`timeline${compact ? ' timeline-compact' : ''}`}>
+    <Tabs.List className="timeline-track" aria-label={label}>
+      {stages.map(s => <Tabs.Tab key={s.stage} value={s.stage} className={`stage stage-${s.status}`} aria-current={s.status === 'active' ? 'step' : undefined}>
+        <span className="stage-marker" aria-hidden="true" />
+        <span className="stage-number mono">{s.stage}</span>
+        <span className="stage-name">{s.name}</span>
+        <span className={`stage-status status-${s.status}`}><span className="status-dot" aria-hidden="true" />{s.statusLabel}</span>
+      </Tabs.Tab>)}
+    </Tabs.List>
+    {stages.map(s => <Tabs.Panel key={s.stage} value={s.stage} className="timeline-panel">
+      <AnimatePresence mode="wait" initial={false}>
+        {s.stage === current.stage ? <motion.div key={s.stage} className={`stage-detail stage-detail-${s.status}`} initial={reduce ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={reduce ? undefined : { opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
+          <div className="stage-detail-head"><span className="mono">{s.stage}</span><h3>{s.name}</h3><span className={`status status-${s.status}`}><span className="status-dot" aria-hidden="true" />{s.statusLabel}</span></div>
+          <p className="stage-description">{s.description}</p>
+          <p className="stage-features"><span className="technical-label">{modulesLabel}</span>{s.features.map(f => <span key={f} className="mono">{f}</span>)}</p>
+        </motion.div> : null}
+      </AnimatePresence>
+    </Tabs.Panel>)}
+  </Tabs.Root>;
 }

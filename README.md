@@ -66,11 +66,12 @@ Bez konfiguracji adres bazowy wskazuje przygotowany adres podglądu Sites; nie o
 
 - `app/` — osobne układy językowe, routing, ikona, robots i sitemap.
 - `components/views/` — pięć widoków stron współdzielonych przez wersje PL i EN.
-- `components/` — `SiteHeader`, `SiteFooter`, `StatusBadge`, `ArchitectureDiagram`, `NetworkTopology`, `ObjectRelationship`, `DocumentFlow`, `RoadmapTimeline`, `TechTable` oraz elementy z `ui.tsx` (`PageIntro`, `SectionHeading`, `MetaList`, `Note`, `TextLink`).
-- `lib/content.ts` — jedno źródło faktów: stos technologiczny ze statusami, etapy roadmapy, segmenty sieci, plan zakończeń okablowania.
+- `components/` — `SiteHeader` (z przełącznikiem motywu), `SiteFooter`, `StatusBadge`, `HeroSystem`, `StatusPanel`, `ArchitectureDiagram`, `NetworkPreview` / `NetworkExplorer`, `ObjectExplorer`, `DocumentFlow`, `RoadmapTimeline`, `TechTable` oraz elementy z `ui.tsx`.
+- `components/flow/` — diagramy React Flow (`@xyflow/react`) z układem Dagre, własnymi węzłami i krawędziami, podświetlaniem powiązań po hover/fokusie i popoverem szczegółów (Base UI). Poniżej 1024 px diagramy przechodzą w pionowe drzewa HTML; każdy diagram ma też tekstowy odpowiednik dla czytników ekranu.
+- `lib/content.ts` — jedno źródło faktów: stos technologiczny ze statusami, etapy roadmapy, segmenty sieci, plan zakończeń okablowania. `lib/graphs.ts` buduje z nich grafy diagramów, `lib/samples.ts` dostarcza przykładowe łańcuchy relacji i kroki przepływu dokumentu.
 - `lib/` — metadata, adresy, słownik tłumaczeń (`en.json`, klucz = tekst polski) i obsługa języków.
 - `app/globals.css` — tokeny (kolory, typografia, odstępy, promienie), style komponentów, breakpointy i reduced motion.
 
-Statusy w całej witrynie pochodzą z jednego słownika (`W rozwoju`, `W laboratorium`, `Planowane`, `Dalsza perspektywa`, `Koncepcja`). Diagramy są zbudowane w HTML/CSS i na wąskich ekranach przechodzą w układ pionowy. Fonty Instrument Sans i IBM Plex Mono są ładowane przez `next/font/google` i self-hostowane podczas buildu.
+Statusy w całej witrynie pochodzą z jednego słownika (`W rozwoju`, `W laboratorium`, `Planowane`, `Dalsza perspektywa`, `Koncepcja`). Motyw jasny / systemowy / ciemny jest zapisywany w `localStorage` i stosowany przed pierwszym renderem przez skrypt inline. Interakcje (zakładki, popover) opierają się na `@base-ui/react`, animacje na `motion`. Fonty Instrument Sans i IBM Plex Mono są ładowane przez `next/font/google` i self-hostowane podczas buildu.
 
 Strona prezentuje koncepcję HomeIntelCore; nie implementuje jego backendu ani importowania dokumentów.

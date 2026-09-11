@@ -1,24 +1,22 @@
-import { t, type Locale } from '@/lib/i18n';
+'use client';
+import { motion, useReducedMotion } from 'motion/react';
+import { NodeIcon } from './flow/node-icon';
+import type { NodeKind } from '@/lib/graphs';
 
-const steps: [string, string, string, boolean][] = [
-  ['01', 'PDF', 'scan_0032.pdf', true],
-  ['02', 'OCR / Paperless-ngx', 'tekst do wyszukiwania', false],
-  ['03', 'Metadane dokumentu', 'Polisa OC', false],
-  ['04', 'Relacja z obiektem', 'Toyota Corolla', false],
-  ['05', 'Termin', '12.04.2027', false],
-  ['06', 'Przypomnienie', '30 dni wcześniej', false],
-];
+export type FlowStep = { n: string; label: string; value: string; mono?: boolean; kind: NodeKind };
 
-/** The document path in the current Home Memory scope, shown before it is explained. */
-export function DocumentFlow({ locale = 'pl' }: { locale?: Locale }) {
-  return <figure className="doc-flow" aria-label={t('Przepływ dokumentu od pliku PDF do przypomnienia', locale)}>
-    <div className="diagram-head"><span>{t('PRZEPŁYW DOKUMENTU', locale)}</span><span>{t('zakres Home Memory', locale)}</span></div>
+/** Six small nodes on one rail; the rail and nodes appear once when scrolled into view. */
+export function DocumentFlow({ steps, title, meta, caption }: { steps: FlowStep[]; title: string; meta: string; caption: string }) {
+  const reduce = useReducedMotion();
+  return <figure className="diagram doc-flow" aria-label={title}>
+    <div className="diagram-head"><span>{title}</span><span>{meta}</span></div>
     <ol className="doc-steps">
-      {steps.map(([n, label, value, mono]) => <li key={n}>
-        <span className="technical-label">{n} {t(label, locale)}</span>
-        <strong className={mono ? 'mono' : undefined}>{t(value, locale)}</strong>
-      </li>)}
+      {steps.map((s, i) => <motion.li key={s.n} initial={reduce ? false : { opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.35, delay: i * 0.07 }}>
+        <span className="doc-step-icon" aria-hidden="true"><NodeIcon kind={s.kind} size={18} /></span>
+        <span className="technical-label">{s.n} {s.label}</span>
+        <strong className={s.mono ? 'mono' : undefined}>{s.value}</strong>
+      </motion.li>)}
     </ol>
-    <figcaption>{t('Oskar, Toyota Corolla i daty polisy to dane przykładowe. OCR odczytuje tekst; powiązanie z obiektem i termin wymagają poprawnych metadanych. Ta strona nie zawiera działającego importera.', locale)}</figcaption>
+    <figcaption>{caption}</figcaption>
   </figure>;
 }

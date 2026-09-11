@@ -1,0 +1,3 @@
+/** Runs before paint so the stored theme never flashes. Mirrors applyTheme() in theme-toggle.tsx. */
+const code = `(function(){try{var s=localStorage.getItem('hic-theme');var d=s==='dark'||(s!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');if(s!=='light'&&s!=='dark'){matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){document.documentElement.setAttribute('data-theme',e.matches?'dark':'light')})}}catch(e){}})();`;
+export function ThemeScript() { return <script dangerouslySetInnerHTML={{ __html: code }} />; }

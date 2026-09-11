@@ -1,0 +1,36 @@
+'use client';
+import { useState } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
+
+export type HeroModule = { id: string; label: string; note: string; status: string; planned?: boolean };
+
+/** Core with its modules. Lines draw once; hovering or focusing a module lights its link. */
+export function HeroSystem({ core, modules, caption }: { core: { label: string; note: string }; modules: HeroModule[]; caption: string }) {
+  const [active, setActive] = useState<string | null>(null);
+  const reduce = useReducedMotion();
+  const w = 560, top = 56, bottom = 226, xs = modules.map((_, i) => 70 + i * ((w - 140) / (modules.length - 1)));
+  const current = modules.find(m => m.id === active);
+  return <div className="hero-system" role="group" aria-label={caption}>
+    <div className="hero-core"><span className="technical-label">CORE</span><strong>{core.label}</strong><span>{core.note}</span></div>
+    <svg className="hero-lines" viewBox={`0 0 ${w} 240`} aria-hidden="true" preserveAspectRatio="none">
+      {xs.map((x, i) => {
+        const m = modules[i];
+        const d = `M ${w / 2} ${top} C ${w / 2} ${top + 70}, ${x} ${bottom - 80}, ${x} ${bottom}`;
+        const lit = active === m.id;
+        return <motion.path key={m.id} d={d} className={`hero-line${m.planned ? ' hero-line-planned' : ''}${lit ? ' hero-line-lit' : ''}`}
+          initial={reduce ? false : { pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ duration: 0.9, delay: 0.2 + i * 0.08, ease: 'easeOut' }} />;
+      })}
+    </svg>
+    <ul className="hero-modules">
+      {modules.map(m => <li key={m.id}>
+        <button type="button" className={`hero-module${m.planned ? ' hero-module-planned' : ''}${active === m.id ? ' hero-module-active' : ''}`}
+          onMouseEnter={() => setActive(m.id)} onMouseLeave={() => setActive(null)} onFocus={() => setActive(m.id)} onBlur={() => setActive(null)} onClick={() => setActive(active === m.id ? null : m.id)}
+          aria-pressed={active === m.id} aria-describedby="hero-module-note">
+          <span className="hero-module-label">{m.label}</span>
+          <span className={`hero-module-status status-${m.planned ? 'planned' : 'lab'}`}><span className="status-dot" aria-hidden="true" />{m.status}</span>
+        </button>
+      </li>)}
+    </ul>
+    <p className="hero-system-note" id="hero-module-note" aria-live="polite">{current ? current.note : caption}</p>
+  </div>;
+}
