@@ -13,10 +13,10 @@ export type StackEntry = { name: string; role: string; description: string; stat
 export const stack: StackEntry[] = [
   { name: 'Next.js', role: 'Interfejs użytkownika', description: 'Warstwa prezentacji łącząca użytkownika z Core. Docelowo jedna aplikacja do całego domu.', status: 'lab' },
   { name: 'Caddy', role: 'Wejście do systemu', description: 'Reverse proxy kierujący ruch do interfejsu w obrębie sieci domowej.', status: 'lab' },
-  { name: 'Core', role: 'Model domu', description: 'Obiekty, ich relacje, uprawnienia oraz terminy. Tutaj powstaje wspólny kontekst domu.', status: 'lab' },
-  { name: 'PostgreSQL', role: 'Dwie odrębne bazy', description: 'Core i Paperless-ngx przechowują dane we własnych bazach. Podział jest celowy i utrzymywany.', status: 'lab' },
+  { name: 'Core', role: 'Model domu', description: 'Obiekty, ich relacje, uprawnienia oraz terminy. Tutaj powstaje wspólny kontekst domu. Dziś działa minimalne Core API (liveness i readiness, PostgreSQL 18, Prisma bez modeli domenowych); model danych pozostaje szkicem.', status: 'lab' },
+  { name: 'PostgreSQL', role: 'Dwie odrębne bazy', description: 'Core i Paperless-ngx przechowują dane we własnych bazach. Podział jest celowy i utrzymywany. Baza Core działa na PostgreSQL 18 i została sprawdzona lokalnie oraz w homelabie.', status: 'lab' },
   { name: 'Kolejka zadań', role: 'Praca w tle', description: 'Import dokumentów, OCR i przypomnienia trafiają do kolejki zamiast blokować interfejs.', status: 'lab' },
-  { name: 'Paperless-ngx', role: 'Dokumenty i OCR', description: 'Warstwa dokumentowa udostępniana Core przez granicę DocumentProvider. Wersja 3.0.4 w aktualnym laboratorium.', status: 'lab' },
+  { name: 'Paperless-ngx', role: 'Dokumenty i OCR', description: 'Warstwa dokumentowa udostępniana Core przez granicę DocumentProvider. Wersja 3.0.4 w aktualnym laboratorium; nie jest jeszcze połączona z Core.', status: 'lab' },
   { name: 'Gotenberg', role: 'Konwersja plików', description: 'Usługa konwersji dokumentów wykorzystywana przez Paperless-ngx.', status: 'lab' },
   { name: 'Docker Compose', role: 'Uruchomienie', description: 'Opisuje wspólne środowisko usług na serwerze HomeIntelCore.', status: 'lab' },
   { name: 'Home Assistant', role: 'Silnik integracji', description: 'Planowana integracja ze smart home: urządzenia, sceny i rutyny pod wspólnym interfejsem.', status: 'planned' },

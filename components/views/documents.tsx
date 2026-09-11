@@ -35,6 +35,7 @@ export default function Documents({ locale = 'pl' }: { locale?: Locale } = {}) {
         <SectionHeading id="lab" title="Laboratorium" locale={locale} />
         <div className="prose">
           <p>{T('Laboratorium działa na maszynie M3 i służy do weryfikacji założeń: importu, OCR, wydajności i granicy integracji z Core. Uruchomione laboratorium nie oznacza kompletnego produktu. To środowisko testowe obecnego zakresu Home Memory.')}</p>
+          <p>{T('Core ma dziś zweryfikowany fundament inżynieryjny (M9): minimalne API, PostgreSQL 18 i Prisma. Paperless nie jest jeszcze połączony z Core przez DocumentProvider; ta integracja jest kolejnym etapem, a model danych M4 pozostaje szkicem.')}</p>
           <p>{T('Odczytanie daty ze skanu nie oznacza jeszcze, że jest to data końca ubezpieczenia. Typ dokumentu, obiekt i termin wymagają poprawnego opisania. Projekt nie zakłada, że każdy PDF zostanie bezbłędnie zinterpretowany automatycznie.')}</p>
           <p>{T('Dokumenty pozostają na własnym serwerze. HomeIntelCore dodaje do nich model domu: osoby, pojazdy, urządzenia i relacje, które nadają plikom znaczenie. Faktura może odnosić się jednocześnie do domu, pomieszczenia, urządzenia, zakupu i gwarancji.')}</p>
           <div className="info-strip"><span className="technical-label">{T('OBECNY ZAKRES')}</span><span className="mono">{['Ludzie', 'Domy', 'Obiekty', 'Dokumenty', 'OCR', 'Wyszukiwanie', 'Terminy'].map(T).join(' · ')}</span><StatusBadge status="active" locale={locale} /></div>

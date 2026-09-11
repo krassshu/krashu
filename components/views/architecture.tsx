@@ -61,7 +61,7 @@ export default function Architecture({ locale = 'pl' }: { locale?: Locale } = {}
     <section className="section container" aria-labelledby="services">
       <SectionHeading id="services" title="Komponenty i ich status" locale={locale}>{T('Pierwsza grupa działa w aktualnym laboratorium: aplikacja, bazy, usługi pomocnicze i sposób ich uruchomienia. Druga opisuje warstwy planowane, których jeszcze nie zbudowano.')}</SectionHeading>
       <TechTable locale={locale} />
-      <Note locale={locale}>{T('„W laboratorium” oznacza komponent uruchomiony w środowisku testowym projektu, a nie gotowy, wdrożony produkt.')}</Note>
+      <Note locale={locale}>{T('„W laboratorium” oznacza komponent uruchomiony w środowisku testowym projektu, a nie gotowy, wdrożony produkt. Zweryfikowany fundament Core (M9) to minimalne API z liveness i readiness, PostgreSQL 18 i Prisma bez modeli domenowych; logowanie, obiekty i integracja z Paperless nie są jeszcze zaimplementowane.')}</Note>
     </section>
 
     <section className="section-row container" aria-labelledby="integrations">

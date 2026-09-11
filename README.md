@@ -61,7 +61,7 @@ Angielski: te same ścieżki z prefiksem `/en/`. Przełącznik języka zachowuje
 
 Strona rozdziela obecny zakres prac od wizji docelowej:
 
-- **Home Memory** — obecny fundament: ludzie, domy, obiekty, dokumenty, OCR, wyszukiwanie oraz terminy i przypomnienia.
+- **Home Memory** — obecny fundament: ludzie, domy, obiekty, dokumenty, OCR, wyszukiwanie oraz terminy i przypomnienia. Stan na 2026-09-11: zweryfikowany fundament inżynieryjny Core (M9) — minimalne API z liveness i readiness, PostgreSQL 18 i Prisma bez modeli domenowych, wdrożenie testowe w homelabie; model danych M4 jest szkicem, Paperless nie jest jeszcze połączony z Core, M10 nie zostało rozpoczęte.
 - **Home Control**, **Home Awareness**, **Home Intelligence**, **Home Autonomy** — etapy planowane.
 - **Home Box** — dalsza perspektywa: kompletne urządzenie z danymi lokalnymi, integracjami, backupem i lokalnym AI.
 

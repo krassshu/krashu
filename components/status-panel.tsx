@@ -4,12 +4,12 @@ import { NodeStatus } from './node-status';
 import { milestones } from '@/lib/content';
 
 const running: [string, string][] = [
-  ['Core', 'obiekty, relacje, uprawnienia, terminy'],
+  ['Core', 'minimalne API: liveness, readiness, PostgreSQL 18, Prisma'],
   ['Next.js', 'interfejs użytkownika'],
   ['PostgreSQL', 'dwie odrębne bazy'],
   ['Kolejka zadań', 'import, OCR, przypomnienia'],
   ['DocumentProvider', 'granica integracji dokumentów'],
-  ['Paperless-ngx 3.0.4', 'dokumenty, OCR, wyszukiwanie'],
+  ['Paperless-ngx 3.0.4', 'dokumenty, OCR, wyszukiwanie; jeszcze niepołączony z Core'],
   ['Gotenberg', 'konwersja plików'],
   ['Caddy', 'reverse proxy w LAN'],
   ['Docker Compose', 'uruchomienie usług'],
@@ -26,7 +26,7 @@ export function StatusPanel({ locale = 'pl' }: { locale?: Locale }) {
         <StatusBadge status="active" locale={locale} />
       </div>
       <ul className="status-rows">{running.map(([name, role]) => <li key={name}><span className="mono">{t(name, locale)}</span><span className="status-rows-role">{t(role, locale)}</span><NodeStatus status="lab" className="status-rows-state">{t('lab', locale)}</NodeStatus></li>)}</ul>
-      <p className="status-card-foot">{t('Komponenty uruchomione w laboratorium projektu na własnym serwerze. To środowisko testowe, nie wdrożony produkt.', locale)}</p>
+      <p className="status-card-foot">{t('Komponenty uruchomione w laboratorium projektu na własnym serwerze. Fundament inżynieryjny Core (M9) został zweryfikowany: minimalne API z liveness i readiness, PostgreSQL 18 i Prisma, wdrożenie testowe w homelabie. Model danych pozostaje szkicem, a Paperless nie jest jeszcze połączony z Core. To środowisko testowe, nie wdrożony produkt.', locale)}</p>
     </div>
     <div className="status-side">
       <div className="status-card">

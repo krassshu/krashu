@@ -24,7 +24,7 @@ export default function Home({ locale = 'pl' }: { locale?: Locale } = {}) {
   const T = (s: string) => t(s, locale);
   const modules = [
     { id: 'documents', icon: 'service' as const, label: T('Dokumenty'), status: T('w laboratorium'), note: T('Paperless-ngx, OCR i wyszukiwanie za granicą DocumentProvider. Pierwszy wdrażany moduł.') },
-    { id: 'objects', icon: 'core' as const, label: T('Obiekty'), status: T('w laboratorium'), note: T('Osoby, domy, pojazdy, urządzenia i ich relacje w Core, z uprawnieniami i terminami.') },
+    { id: 'objects', icon: 'core' as const, label: T('Obiekty'), status: T('w laboratorium'), note: T('Osoby, domy, pojazdy, urządzenia i ich relacje w Core, z uprawnieniami i terminami. Dziś istnieje minimalne Core API (M9); obiekty czekają na domknięcie modelu danych.') },
     { id: 'network', icon: 'switch' as const, label: T('Sieć'), status: T('plan'), note: T('MikroTik RB5009 i CRS310 z osobnym linkiem SFP+ do serwera. Okablowanie jeszcze niewykonane.'), planned: true },
     { id: 'automation', icon: 'ap' as const, label: T('Automatyka'), status: T('planowane'), note: T('Home Assistant jako silnik integracji, sterowanie i rutyny w granicach zgody użytkownika.'), planned: true },
   ];
@@ -49,7 +49,7 @@ export default function Home({ locale = 'pl' }: { locale?: Locale } = {}) {
 
     <section className="section band container-wide" aria-labelledby="status">
       <div className="container">
-        <SectionHeading id="status" title="Obecny system" locale={locale}>{T('Co działa w laboratorium, co jest następne i co pozostaje dalszą perspektywą.')}</SectionHeading>
+        <SectionHeading id="status" title="Obecny system" locale={locale}>{T('Co działa w laboratorium, co zostało zweryfikowane, co jest następne i co pozostaje dalszą perspektywą.')}</SectionHeading>
         <StatusPanel locale={locale} />
       </div>
     </section>
